@@ -31,7 +31,6 @@ namespace MarketPlace.DataLayer.Entities.Account
 
         [Display(Name = "موبایل فعال / غیرفعال")]
         public bool IsMobileActive { get; set; }
-
         [Display(Name = "کلمه عبور")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(200, ErrorMessage = "نمی توان بیشتر از {1} کاراکتر باشد {0}")]

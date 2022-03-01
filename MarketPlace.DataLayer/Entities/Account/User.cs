@@ -7,7 +7,6 @@ namespace MarketPlace.DataLayer.Entities.Account
     {
         #region Properties
         [Display(Name = "ایمیل")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(200, ErrorMessage = "نمی توان بیشتر از {1} کاراکتر باشد {0}")]
         [EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نمی باشد")]
         [DataType(DataType.EmailAddress)]

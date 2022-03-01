@@ -3,6 +3,7 @@ using MarketPlace.DataLayer.DTOs.Account;
 using MarketPlace.DataLayer.Entities.Account;
 using MarketPlace.DataLayer.Repository;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,12 +31,16 @@ namespace MarketPlace.Application.Services.Implementations
                     Mobile = register.Mobile,
                     FirstName = register.FirstName,
                     LastName = register.LastName,
-                    Password = _passwordHelper.EncodePassswordMd5(register.Password)
+                    Password = _passwordHelper.EncodePassswordMd5(register.Password),
+                    MobileActiveCode = new Random().Next(10000, 999999).ToString(),
+                    EmailActiveCode = Guid.NewGuid().ToString("N")
                 };
 
                 await _userRepository.AddEntity(user);
                 await _userRepository.SaveChanges();
                 // todo: Send activation mobile code to user
+
+                return RegisterUserResult.Success;
             }
 
             return RegisterUserResult.MobileExists;

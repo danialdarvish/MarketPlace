@@ -3,44 +3,28 @@
 <html class="no-js" lang="fa" dir="rtl">
 
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>@ViewData["Title"] | فروشگاه ساز</title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- Favicon -->
-	<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
-
-	<!-- CSS 
-    ========================= -->
-
-	<!-- Plugins CSS -->
-	<link rel="stylesheet" href="/css/plugins.css">
-
-	<!-- Main Style CSS -->
-	<link rel="stylesheet" href="/css/style.css">
-
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@ViewData["Title"] | فروشگاه ساز</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <partial name="_HeaderReferences" />
+    @RenderSection("styles", false)
 </head>
 
 <body>
 
 
-	@await Component.InvokeAsync("SiteHeader");
-	
-	@RenderBody();
+    @await Component.InvokeAsync("SiteHeader");
 
-	@await Component.InvokeAsync("SiteFooter");
+    @RenderBody();
+
+    @await Component.InvokeAsync("SiteFooter");
 
 
-	<!-- JS
-============================================ -->
-
-	<!-- Plugins JS -->
-	<script src="/js/plugins.js"></script>
-
-	<!-- Main JS -->
-	<script src="/js/main.js"></script>
-
+    <partial name="_FooterReferences" />
+    @RenderSection("scripts", false)
+    <partial name="_SiteMessages" />
 
 
 </body>

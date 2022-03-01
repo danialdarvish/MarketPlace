@@ -24,7 +24,7 @@ namespace MarketPlace.DataLayer.DTOs.Account
         [MaxLength(200, ErrorMessage = "نمی توان بیشتر از {1} کاراکتر باشد {0}")]
         public string Password { get; set; }
 
-        [Display(Name = "کلمه عبور")]
+        [Display(Name = "تکرار کلمه عبور")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(200, ErrorMessage = "نمی توان بیشتر از {1} کاراکتر باشد {0}")]
         [Compare("Password", ErrorMessage = "کلمه های عبور مغایرت دارند.")]

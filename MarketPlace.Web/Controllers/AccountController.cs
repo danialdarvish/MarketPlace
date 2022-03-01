@@ -32,12 +32,12 @@ namespace MarketPlace.Web.Controllers
                 switch (result)
                 {
                     case RegisterUserResult.MobileExists:
-                        TempData["ErrorMessage"] = "تلفن همراه وارد شده تکراری می باشد";
+                        TempData[ErrorMessage] = "تلفن همراه وارد شده تکراری می باشد";
                         ModelState.AddModelError("mobile", "تلفن همراه وارد شده تکراری می باشد");
                         break;
                     case RegisterUserResult.Success:
-                        TempData["SuccessMessage"] = "ثبت نام شما با موفقیت انجام شد";
-                        TempData["InfoMessage"] = "کد تایید تلفن همراه برای شما ارسال شد";
+                        TempData[SuccessMessage] = "ثبت نام شما با موفقیت انجام شد";
+                        TempData[InfoMessage] = "کد تایید تلفن همراه برای شما ارسال شد";
                         return RedirectToAction("Login");
                 }
             }
@@ -47,10 +47,16 @@ namespace MarketPlace.Web.Controllers
         #endregion
 
         #region Login
+        [HttpGet("login")]
         public IActionResult Login()
         {
             return View();
         }
+
+        //public async Task<IActionResult> Login()
+        //{
+        //    return View();
+        //}
         #endregion
     }
 }

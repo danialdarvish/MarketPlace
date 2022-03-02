@@ -1,4 +1,8 @@
-﻿<!--footer area start-->
+﻿@using MarketPlace.DataLayer.Entities.Site
+@{
+    var siteSetting = ViewBag.siteSetting as SiteSetting;
+}
+<!--footer area start-->
 	<footer class="footer_widgets">
 		<div class="footer_top">
 			<div class="container">
@@ -9,10 +13,10 @@
 								<a href="#"><img src="/img/logo/logo.png" alt=""></a>
 							</div>
 							<div class="footer_contact">
-								<p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p>
-								<p><span>آدرس: </span> تبریز، چهارراه آبرسان، فلکه دانشگاه، برج بلور، طبقه 678، واحد 85</p>
-								<p><span>موبایل: </span><a class="ltr-text" href="tel:+989123456789">+(98) 123 456 789</a> ، <a class="ltr-text" href="tel:+989123456789">+(98) 123 456 789</a> </p>
-								<p><span>پشتیبانی: </span><a target="_blank" href="#">support@sample.com</a></p>
+								<p>@siteSetting.FooterText</p>
+								<p><span>آدرس: </span>@siteSetting.Address</p>
+								<p><span>تماس: </span><a class="ltr-text" href="tel:+989123456789">@siteSetting.Mobile</a> ، <a class="ltr-text" href="tel:+989123456789">@siteSetting.Phone</a> </p>
+								<p><span>پشتیبانی: </span><a target="_blank" href="#">@siteSetting.Email</a></p>
 							</div>
 						</div>
 					</div>
@@ -85,7 +89,7 @@
 				<div class="row align-items-center">
 					<div class="col-lg-6 col-md-6">
 						<div class="copyright_area">
-							<p>toplearn</p>
+							<p>@siteSetting.CopyRight</p>
 						</div>
 					</div>
 					<div class="col-lg-6 col-md-6">

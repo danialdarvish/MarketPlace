@@ -34,6 +34,7 @@ namespace MarketPlace.Web
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordHelper, PasswordHelper>();
+            services.AddScoped<ISiteService, SiteService>();
             #endregion
 
             #region Authentication

@@ -1,4 +1,6 @@
 ﻿using MarketPlace.DataLayer.Entities.Common;
+using MarketPlace.DataLayer.Entities.Contacts;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MarketPlace.DataLayer.Entities.Account
@@ -54,6 +56,7 @@ namespace MarketPlace.DataLayer.Entities.Account
         #endregion
 
         #region Relations 
+        public ICollection<ContactUs> ContactUses { get; set; }
         #endregion
     }
 }

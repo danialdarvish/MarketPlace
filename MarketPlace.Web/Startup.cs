@@ -35,6 +35,7 @@ namespace MarketPlace.Web
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordHelper, PasswordHelper>();
             services.AddScoped<ISiteService, SiteService>();
+            services.AddScoped<IContactService, ContactService>();
             #endregion
 
             #region Authentication

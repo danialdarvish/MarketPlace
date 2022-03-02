@@ -50,6 +50,37 @@ namespace MarketPlace.Application.Services.Implementations
         {
             return await _userRepository.GetQuery().AnyAsync(x => x.Mobile == mobile);
         }
+
+
+        public async Task<LoginUserResult> GetUserForLogin(LoginUserDto login)
+        {
+            var user = await _userRepository.GetQuery().FirstOrDefaultAsync(x => x.Mobile == login.Mobile);
+            if (user == null) return LoginUserResult.NotFound;
+            if (!user.IsMobileActive) return LoginUserResult.NotActivated;
+            if (user.Password != _passwordHelper.EncodePassswordMd5(login.Password)) return LoginUserResult.NotFound;
+
+            return LoginUserResult.Success;
+        }
+
+        public async Task<User> GetUserByMobile(string mobile)
+        {
+            return await _userRepository.GetQuery().FirstOrDefaultAsync(x => x.Mobile == mobile);
+        }
+
+
+        public async Task<ForgotPasswordResult> RecoverUserPassword(ForgotPasswordDto forgot)
+        {
+            var user = await _userRepository.GetQuery().FirstOrDefaultAsync(x => x.Mobile == forgot.Mobile);
+            if (user == null) return ForgotPasswordResult.NotFound;
+            var newPassword = new Random().Next(1000000, 99999999).ToString(); //88943660
+            user.Password = _passwordHelper.EncodePassswordMd5(newPassword);
+            _userRepository.EditEntity(user);
+            // todo: Send new password to user with SMS
+
+            await _userRepository.SaveChanges();
+
+            return ForgotPasswordResult.Success;
+        }
         #endregion
 
         #region Dispose

@@ -1,3 +1,5 @@
+using GoogleReCaptcha.V3;
+using GoogleReCaptcha.V3.Interface;
 using MarketPlace.Application.Services.Implementations;
 using MarketPlace.Application.Services.Interfaces;
 using MarketPlace.DataLayer.Context;
@@ -28,6 +30,7 @@ namespace MarketPlace.Web
         {
             #region Config Services
             services.AddControllersWithViews();
+            services.AddHttpClient<ICaptchaValidator, GoogleReCaptchaValidator>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordHelper, PasswordHelper>();

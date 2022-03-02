@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MarketPlace.DataLayer.DTOs.Site;
+using System.ComponentModel.DataAnnotations;
 
 namespace MarketPlace.DataLayer.DTOs.Account
 {
-    public class RegisterUserDto
+    public class RegisterUserDto : CaptchaViewModel
     {
         [Display(Name = "تلفن همراه")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]

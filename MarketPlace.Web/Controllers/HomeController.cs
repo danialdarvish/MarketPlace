@@ -1,8 +1,10 @@
 ﻿using GoogleReCaptcha.V3.Interface;
 using MarketPlace.Application.Services.Interfaces;
 using MarketPlace.DataLayer.DTOs.Contacts;
+using MarketPlace.DataLayer.Entities.Site;
 using MarketPlace.Web.PresentationExtensions;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MarketPlace.Web.Controllers
@@ -11,21 +13,39 @@ namespace MarketPlace.Web.Controllers
     {
         #region Constructor
 
+        private readonly ISiteService _siteService;
         private readonly IContactService _contactService;
         private readonly ICaptchaValidator _captchaValidator;
 
-        public HomeController(IContactService contactService, ICaptchaValidator captchaValidator)
+        public HomeController(IContactService contactService, ICaptchaValidator captchaValidator, ISiteService siteService)
         {
+            _siteService = siteService;
             _contactService = contactService;
             _captchaValidator = captchaValidator;
         }
 
         #endregion
 
-        #region Contact Us
+        #region Index       
+
+        public async Task<IActionResult> Index()
+        {
+            ViewBag.banners = await _siteService.GetSiteBannersByPlacement(new List<BannerPlacement>
+            {
+                BannerPlacement.Home_1,
+                BannerPlacement.Home_2,
+                BannerPlacement.Home_3
+            });
+
+            return View();
+        }
+
+        #endregion
+
+        #region Contact us
 
         [HttpGet("contact-us")]
-        public async Task<IActionResult> ContactUs()
+        public IActionResult ContactUs()
         {
             return View();
         }
@@ -51,13 +71,16 @@ namespace MarketPlace.Web.Controllers
         }
         #endregion
 
-        #region Index       
+        #region About us
 
-        public IActionResult Index()
+        [HttpGet("about-us")]
+        public async Task<IActionResult> AboutUs()
         {
-            return View();
+            var siteSetting = await _siteService.GetDefaultSiteSetting();
+            return View(siteSetting);
         }
 
         #endregion
+
     }
 }

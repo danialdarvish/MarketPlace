@@ -1,223 +1,12 @@
-﻿@{
+﻿@using MarketPlace.Application.EntitiesExtensions
+@using MarketPlace.DataLayer.Entities.Site
+@{
     ViewData["Title"] = "صفحه اصلی";
+    var banners = ViewBag.banners as List<SiteBanner>;
 }
 
-<!--sticky header area start-->
-<div class="sticky_header_area sticky-header">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-3">
-                <div class="logo">
-                    <a href="index.html"><img src="/img/logo/logo.png" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="sticky_header_right menu_position">
-                    <div class="main_menu">
-                        <nav>
-                            <ul>
-                                <li>
-                                    <a class="active" href="index.html">خانه<i class="fa fa-angle-down"></i></a>
-                                    <ul class="sub_menu">
-                                        <li><a href="index.html">خانه فروشگاه 1</a></li>
-                                        <li><a href="index-2.html">خانه فروشگاه 2</a></li>
-                                        <li><a href="index-3.html">خانه فروشگاه 3</a></li>
-                                        <li><a href="index-4.html">خانه فروشگاه 4</a></li>
-                                        <li><a href="index-5.html">خانه فروشگاه 5</a></li>
-                                    </ul>
-                                </li>
-                                <li class="mega_items">
-                                    <a href="shop.html">فروشگاه<i class="fa fa-angle-down"></i></a>
-                                    <div class="mega_menu">
-                                        <ul class="mega_menu_inner">
-                                            <li>
-                                                <a href="#">طرح های فروشگاه</a>
-                                                <ul>
-                                                    <li><a href="shop-fullwidth.html">تمام عرض</a></li>
-                                                    <li><a href="shop-fullwidth-list.html">تمام عرض لیست</a></li>
-                                                    <li><a href="shop-left-sidebar.html">نوار کناری چپ </a></li>
-                                                    <li><a href="shop-left-sidebar-list.html"> نوار کناری چپ لیست</a></li>
-                                                    <li><a href="shop-list.html">نمایش لیست</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="#">سایر صفحات</a>
-                                                <ul>
-                                                    <li><a href="cart.html">سبد خرید</a></li>
-                                                    <li><a href="wishlist.html">لیست علاقه‌مندی‌ها</a></li>
-                                                    <li><a href="checkout.html">پرداخت</a></li>
-                                                    <li><a href="my-account.html">حساب کاربری</a></li>
-                                                    <li><a href="404.html">خطای 404</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="#">انواع محصول</a>
-                                                <ul>
-                                                    <li><a href="product-details.html">جزئیات محصول</a></li>
-                                                    <li><a href="product-sidebar.html">محصول با نوار کناری</a></li>
-                                                    <li><a href="product-grouped.html">محصول گروهبندی شده</a></li>
-                                                    <li><a href="variable-product.html">محصول متغیر</a></li>
-                                                    <li><a href="product-countdown.html">محصول شمارنده</a></li>
 
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="#">ابزارهای کامپیوتر</a>
-                                                <ul>
-                                                    <li><a href="shop.html">کابل و اتصال دهنده ها</a></li>
-                                                    <li><a href="shop-list.html">تبلت های گرافیکی</a></li>
-                                                    <li><a href="shop-fullwidth.html">پرینتر ها، جوهر و تونر</a></li>
-                                                    <li><a href="shop-fullwidth-list.html">تبلت های دست دوم</a></li>
-                                                    <li><a href="shop-left-sidebar.html">درایو های نوری</a></li>
-
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="blog.html">بلاگ<i class="fa fa-angle-down"></i></a>
-                                    <ul class="sub_menu pages">
-                                        <li><a href="blog-details.html">جزئیات مطلب بلاگ</a></li>
-                                        <li><a href="blog-fullwidth.html">بلاگ تمام عرض</a></li>
-                                        <li><a href="blog-sidebar.html">بلاگ نوار کناری راست</a></li>
-                                        <li><a href="blog-no-sidebar.html">بلاگ بدون نوار کناری</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">صفحات <i class="fa fa-angle-down"></i></a>
-                                    <ul class="sub_menu pages">
-                                        <li><a href="about.html">درباره ما</a></li>
-                                        <li><a href="services.html">خدمات</a></li>
-                                        <li><a href="privacy-policy.html">سیاست حریم خصوصی</a></li>
-                                        <li><a href="faq.html">سوالات متداول</a></li>
-                                        <li><a href="contact.html">تماس</a></li>
-                                        <li><a href="login.html">ورود</a></li>
-                                        <li><a href="404.html">خطای 404</a></li>
-                                    </ul>
-                                </li>
-
-                                <li><a href="about.html">درباره ما</a></li>
-                                <li><a href="contact.html"> تماس با ما</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="middel_right_info">
-                        <div class="header_wishlist">
-                            <a href="wishlist.html"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
-                            <span class="wishlist_quantity">3</span>
-                        </div>
-                        <div class="mini_cart_wrapper">
-                            <a href="javascript:void(0)"><i class="fa fa-shopping-bag" aria-hidden="true"></i> <i class="fa fa-angle-down"></i></a>
-                            <span class="cart_quantity">2</span>
-                            <!--mini cart-->
-                            <div class="mini_cart">
-                                <div class="cart_items_container">
-                                    <div class="cart_item">
-                                        <div class="cart_img">
-                                            <a href="#"><img src="/img/s-product/product.jpg" alt=""></a>
-                                        </div>
-                                        <div class="cart_info">
-                                            <a href="#">لورم ایپسوم متن ساختگی با تولید سادگی</a>
-                                            <p>تعداد: 1 × <span> 60,000 تومان </span></p>
-                                        </div>
-                                        <div class="cart_remove">
-                                            <a href="#"><i class="ion-android-close"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="cart_item">
-                                        <div class="cart_img">
-                                            <a href="#"><img src="/img/s-product/product2.jpg" alt=""></a>
-                                        </div>
-                                        <div class="cart_info">
-                                            <a href="#">لورم ایپسوم متن ساختگی با تولید سادگی</a>
-                                            <p>تعداد: 1 × <span> 60,000 تومان </span></p>
-                                        </div>
-                                        <div class="cart_remove">
-                                            <a href="#"><i class="ion-android-close"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mini_cart_table">
-                                    <div class="cart_total">
-                                        <span>جمع اجزا:</span>
-                                        <span class="price">138,000 تومان </span>
-                                    </div>
-                                    <div class="cart_total mt-10">
-                                        <span>جمع کل:</span>
-                                        <span class="price">138,000 تومان </span>
-                                    </div>
-                                </div>
-
-                                <div class="mini_cart_footer">
-                                    <div class="cart_button">
-                                        <a href="cart.html">مشاهده سبد</a>
-                                    </div>
-                                    <div class="cart_button">
-                                        <a href="checkout.html">پرداخت</a>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            <!--mini cart end-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--sticky header area end-->
-<!--slider area start-->
-<section class="slider_section mb-70">
-    <div class="slider_area owl-carousel">
-        <div class="single_slider d-flex align-items-center" data-bgimg="/img/slider/slider1.jpg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="slider_content">
-                            <h1> طراحی زیبا</h1>
-                            <h2>تلویزیون 85 اینچ</h2>
-                            <p>پیشنهاد ویژه <span> 20% تخفیف </span> این هفته</p>
-                            <a class="button" href="shop.html">اکنون بخرید</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="single_slider d-flex align-items-center" data-bgimg="/img/slider/slider2.jpg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="slider_content">
-                            <h1>دوربین دوگانه</h1>
-                            <h2>کیفیت 20MP</h2>
-                            <p>پیشنهاد ویژه <span> 20% تخفیف </span> این هفته</p>
-                            <a class="button" href="shop.html">اکنون بخرید</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="single_slider d-flex align-items-center" data-bgimg="/img/slider/slider3.jpg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="slider_content">
-                            <h1>عجله کنید!</h1>
-                            <h2>محصولات برتر سال</h2>
-                            <p>پیشنهاد ویژه <span> 20% تخفیف </span> این هفته</p>
-                            <a class="button" href="shop.html">اکنون بخرید</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--slider area end-->
+@await Component.InvokeAsync("HomeSlider")
 <!--shipping area start-->
 <section class="shipping_area mb-70">
     <div class="container">
@@ -271,33 +60,27 @@
 </section>
 <!--shipping area end-->
 <!--banner area start-->
-<div class="banner_area mb-40">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-3">
-                <div class="single_banner mb-30">
-                    <div class="banner_thumb">
-                        <a href="shop.html"><img src="/img/bg/banner1.jpg" alt=""></a>
+@if (banners != null && banners.Any(x => x.BannerPlacement == BannerPlacement.Home_1))
+{
+
+    <div class="banner_area mb-40">
+        <div class="container">
+            <div class="row">
+                @foreach (var banner in banners.Where(x => x.BannerPlacement == BannerPlacement.Home_1))
+                {
+                    <div class="@banner.ColSize">
+                        <div class="single_banner mb-30">
+                            <div class="banner_thumb">
+                                <a href="@banner.Url"><img src="@banner.GetBannerMainImageAddress()" alt="" style="width: 100%"></a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <div class="single_banner mb-30">
-                    <div class="banner_thumb">
-                        <a href="shop.html"><img src="/img/bg/banner2.jpg" alt=""></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3">
-                <div class="single_banner mb-30">
-                    <div class="banner_thumb">
-                        <a href="shop.html"><img src="/img/bg/banner3.jpg" alt=""></a>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </div>
-</div>
+}
+
 <!--banner area end-->
 <!--product area start-->
 <section class="product_area mb-46">
@@ -549,17 +332,19 @@
 <div class="banner_area mb-40">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-md-6">
-                <div class="single_banner mb-30">
-                    <div class="banner_thumb">
-                        <a href="shop.html"><img src="/img/bg/banner4.jpg" alt=""></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <div class="single_banner mb-30">
-                    <div class="banner_thumb">
-                        <a href="shop.html"><img src="/img/bg/banner5.jpg" alt=""></a>
+            <div class="banner_area mb-40">
+                <div class="container">
+                    <div class="row">
+                        @foreach (var banner in banners.Where(x => x.BannerPlacement == BannerPlacement.Home_2))
+                        {
+                            <div class="@banner.ColSize">
+                                <div class="single_banner mb-30">
+                                    <div class="banner_thumb">
+                                        <a href="@banner.Url"><img src="@banner.GetBannerMainImageAddress()" alt="" style="width: 100%"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -1163,17 +948,19 @@
 <div class="banner_area mb-40">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9 col-md-9">
-                <div class="single_banner mb-30">
-                    <div class="banner_thumb">
-                        <a href="shop.html"><img src="/img/bg/banner6.jpg" alt=""></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3">
-                <div class="single_banner mb-30">
-                    <div class="banner_thumb">
-                        <a href="shop.html"><img src="/img/bg/banner7.jpg" alt=""></a>
+            <div class="banner_area mb-40">
+                <div class="container">
+                    <div class="row">
+                        @foreach (var banner in banners.Where(x => x.BannerPlacement == BannerPlacement.Home_3))
+                        {
+                            <div class="@banner.ColSize">
+                                <div class="single_banner mb-30">
+                                    <div class="banner_thumb">
+                                        <a href="@banner.Url"><img src="@banner.GetBannerMainImageAddress()" alt="" style="width: 100%"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -1597,3 +1384,170 @@
     </div>
 </div>
 <!--brand area end-->
+<!--sticky header area start-->
+@*<div class="sticky_header_area sticky-header">
+    <div class="container">
+    <div class="row align-items-center">
+    <div class="col-lg-3">
+    <div class="logo">
+    <a href="index.html"><img src="/img/logo/logo.png" alt=""></a>
+    </div>
+    </div>
+    <div class="col-lg-9">
+    <div class="sticky_header_right menu_position">
+    <div class="main_menu">
+    <nav>
+    <ul>
+    <li>
+    <a class="active" href="index.html">خانه<i class="fa fa-angle-down"></i></a>
+    <ul class="sub_menu">
+    <li><a href="index.html">خانه فروشگاه 1</a></li>
+    <li><a href="index-2.html">خانه فروشگاه 2</a></li>
+    <li><a href="index-3.html">خانه فروشگاه 3</a></li>
+    <li><a href="index-4.html">خانه فروشگاه 4</a></li>
+    <li><a href="index-5.html">خانه فروشگاه 5</a></li>
+    </ul>
+    </li>
+    <li class="mega_items">
+    <a href="shop.html">فروشگاه<i class="fa fa-angle-down"></i></a>
+    <div class="mega_menu">
+    <ul class="mega_menu_inner">
+    <li>
+    <a href="#">طرح های فروشگاه</a>
+    <ul>
+    <li><a href="shop-fullwidth.html">تمام عرض</a></li>
+    <li><a href="shop-fullwidth-list.html">تمام عرض لیست</a></li>
+    <li><a href="shop-left-sidebar.html">نوار کناری چپ </a></li>
+    <li><a href="shop-left-sidebar-list.html"> نوار کناری چپ لیست</a></li>
+    <li><a href="shop-list.html">نمایش لیست</a></li>
+    </ul>
+    </li>
+    <li>
+    <a href="#">سایر صفحات</a>
+    <ul>
+    <li><a href="cart.html">سبد خرید</a></li>
+    <li><a href="wishlist.html">لیست علاقه‌مندی‌ها</a></li>
+    <li><a href="checkout.html">پرداخت</a></li>
+    <li><a href="my-account.html">حساب کاربری</a></li>
+    <li><a href="404.html">خطای 404</a></li>
+    </ul>
+    </li>
+    <li>
+    <a href="#">انواع محصول</a>
+    <ul>
+    <li><a href="product-details.html">جزئیات محصول</a></li>
+    <li><a href="product-sidebar.html">محصول با نوار کناری</a></li>
+    <li><a href="product-grouped.html">محصول گروهبندی شده</a></li>
+    <li><a href="variable-product.html">محصول متغیر</a></li>
+    <li><a href="product-countdown.html">محصول شمارنده</a></li>
+
+    </ul>
+    </li>
+    <li>
+    <a href="#">ابزارهای کامپیوتر</a>
+    <ul>
+    <li><a href="shop.html">کابل و اتصال دهنده ها</a></li>
+    <li><a href="shop-list.html">تبلت های گرافیکی</a></li>
+    <li><a href="shop-fullwidth.html">پرینتر ها، جوهر و تونر</a></li>
+    <li><a href="shop-fullwidth-list.html">تبلت های دست دوم</a></li>
+    <li><a href="shop-left-sidebar.html">درایو های نوری</a></li>
+
+    </ul>
+    </li>
+    </ul>
+    </div>
+    </li>
+    <li>
+    <a href="blog.html">بلاگ<i class="fa fa-angle-down"></i></a>
+    <ul class="sub_menu pages">
+    <li><a href="blog-details.html">جزئیات مطلب بلاگ</a></li>
+    <li><a href="blog-fullwidth.html">بلاگ تمام عرض</a></li>
+    <li><a href="blog-sidebar.html">بلاگ نوار کناری راست</a></li>
+    <li><a href="blog-no-sidebar.html">بلاگ بدون نوار کناری</a></li>
+    </ul>
+    </li>
+    <li>
+    <a href="#">صفحات <i class="fa fa-angle-down"></i></a>
+    <ul class="sub_menu pages">
+    <li><a href="about.html">درباره ما</a></li>
+    <li><a href="services.html">خدمات</a></li>
+    <li><a href="privacy-policy.html">سیاست حریم خصوصی</a></li>
+    <li><a href="faq.html">سوالات متداول</a></li>
+    <li><a href="contact.html">تماس</a></li>
+    <li><a href="login.html">ورود</a></li>
+    <li><a href="404.html">خطای 404</a></li>
+    </ul>
+    </li>
+
+    <li><a href="about.html">درباره ما</a></li>
+    <li><a href="contact.html"> تماس با ما</a></li>
+    </ul>
+    </nav>
+    </div>
+    <div class="middel_right_info">
+    <div class="header_wishlist">
+    <a href="wishlist.html"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+    <span class="wishlist_quantity">3</span>
+    </div>
+    <div class="mini_cart_wrapper">
+    <a href="javascript:void(0)"><i class="fa fa-shopping-bag" aria-hidden="true"></i> <i class="fa fa-angle-down"></i></a>
+    <span class="cart_quantity">2</span>
+    <!--mini cart-->
+    <div class="mini_cart">
+    <div class="cart_items_container">
+    <div class="cart_item">
+    <div class="cart_img">
+    <a href="#"><img src="/img/s-product/product.jpg" alt=""></a>
+    </div>
+    <div class="cart_info">
+    <a href="#">لورم ایپسوم متن ساختگی با تولید سادگی</a>
+    <p>تعداد: 1 × <span> 60,000 تومان </span></p>
+    </div>
+    <div class="cart_remove">
+    <a href="#"><i class="ion-android-close"></i></a>
+    </div>
+    </div>
+    <div class="cart_item">
+    <div class="cart_img">
+    <a href="#"><img src="/img/s-product/product2.jpg" alt=""></a>
+    </div>
+    <div class="cart_info">
+    <a href="#">لورم ایپسوم متن ساختگی با تولید سادگی</a>
+    <p>تعداد: 1 × <span> 60,000 تومان </span></p>
+    </div>
+    <div class="cart_remove">
+    <a href="#"><i class="ion-android-close"></i></a>
+    </div>
+    </div>
+    </div>
+    <div class="mini_cart_table">
+    <div class="cart_total">
+    <span>جمع اجزا:</span>
+    <span class="price">138,000 تومان </span>
+    </div>
+    <div class="cart_total mt-10">
+    <span>جمع کل:</span>
+    <span class="price">138,000 تومان </span>
+    </div>
+    </div>
+
+    <div class="mini_cart_footer">
+    <div class="cart_button">
+    <a href="cart.html">مشاهده سبد</a>
+    </div>
+    <div class="cart_button">
+    <a href="checkout.html">پرداخت</a>
+    </div>
+
+    </div>
+
+    </div>
+    <!--mini cart end-->
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>*@
+<!--sticky header area end-->

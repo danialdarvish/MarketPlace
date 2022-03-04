@@ -4,14 +4,16 @@ using MarketPlace.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MarketPlace.DataLayer.Migrations
 {
     [DbContext(typeof(MarketPlaceDbContext))]
-    partial class MarketPlaceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220304083436_BannerPlacementAdded")]
+    partial class BannerPlacementAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,9 +184,6 @@ namespace MarketPlace.DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AboutUs")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");

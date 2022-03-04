@@ -4,14 +4,16 @@ using MarketPlace.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MarketPlace.DataLayer.Migrations
 {
     [DbContext(typeof(MarketPlaceDbContext))]
-    partial class MarketPlaceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220303082055_SliderAdded")]
+    partial class SliderAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,54 +139,12 @@ namespace MarketPlace.DataLayer.Migrations
                     b.ToTable("ContactUses");
                 });
 
-            modelBuilder.Entity("MarketPlace.DataLayer.Entities.Site.SiteBanner", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BannerPlacement")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ColSize")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SiteBanners");
-                });
-
             modelBuilder.Entity("MarketPlace.DataLayer.Entities.Site.SiteSetting", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AboutUs")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");

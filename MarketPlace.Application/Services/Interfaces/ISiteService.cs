@@ -1,8 +1,6 @@
 ﻿using MarketPlace.DataLayer.Entities.Site;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MarketPlace.Application.Services.Interfaces
@@ -12,6 +10,18 @@ namespace MarketPlace.Application.Services.Interfaces
         #region Site Setting
 
         Task<SiteSetting> GetDefaultSiteSetting();
+
+        #endregion
+
+        #region Slider
+
+        Task<List<Slider>> GetAllActiveSliders();
+
+        #endregion
+
+        #region Site Banners
+
+        Task<List<SiteBanner>> GetSiteBannersByPlacement(List<BannerPlacement> placements);
 
         #endregion
     }

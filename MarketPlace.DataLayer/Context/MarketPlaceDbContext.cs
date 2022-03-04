@@ -13,15 +13,19 @@ namespace MarketPlace.DataLayer.Context
         {
 
         }
+
+
         #region Account
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Slider> Sliders { get; set; }
 
         #endregion
 
         #region Site
 
         public DbSet<SiteSetting> SiteSettings { get; set; }
+        public DbSet<SiteBanner> SiteBanners { get; set; }
 
         #endregion
 

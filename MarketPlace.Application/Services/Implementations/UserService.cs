@@ -4,8 +4,12 @@ using MarketPlace.DataLayer.Entities.Account;
 using MarketPlace.DataLayer.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MarketPlace.Application.Extensions;
+using MarketPlace.Application.Utils;
+using Microsoft.AspNetCore.Http;
 
 namespace MarketPlace.Application.Services.Implementations
 {
@@ -72,7 +76,7 @@ namespace MarketPlace.Application.Services.Implementations
         {
             var user = await _userRepository.GetQuery().FirstOrDefaultAsync(x => x.Mobile == forgot.Mobile);
             if (user == null) return ForgotPasswordResult.NotFound;
-            var newPassword = new Random().Next(1000000, 99999999).ToString(); //88943660
+            var newPassword = new Random().Next(1000000, 99999999).ToString();
             user.Password = _passwordHelper.EncodePassswordMd5(newPassword);
             _userRepository.EditEntity(user);
             // todo: Send new password to user with SMS
@@ -81,13 +85,71 @@ namespace MarketPlace.Application.Services.Implementations
 
             return ForgotPasswordResult.Success;
         }
+
+        public async Task<bool> ChangeUserPassword(ChangePasswordDto changePass, long currentUserId)
+        {
+            var user = await _userRepository.GetEntityById(currentUserId);
+            if (user != null)
+            {
+                var newPassword = _passwordHelper.EncodePassswordMd5(changePass.NewPassword);
+                if (newPassword != user.Password)
+                {
+                    user.Password = newPassword;
+                    _userRepository.EditEntity(user);
+                    await _userRepository.SaveChanges();
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public async Task<EditUserProfileDto> GetProfileForEdit(long userId)
+        {
+            var user = await _userRepository.GetEntityById(userId);
+            if (user == null) return null;
+
+            return new EditUserProfileDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Avatar = user.Avatar
+            };
+        }
+
+        public async Task<EditUserProfileResult> EditUserProfile(EditUserProfileDto profile, long userId, IFormFile avatarImage)
+        {
+            var user = await _userRepository.GetEntityById(userId);
+
+            if (user == null) return EditUserProfileResult.NotFound;
+            if (user.IsBlocked) return EditUserProfileResult.IsBlocked;
+            if (!user.IsMobileActive) return EditUserProfileResult.IsNotActive;
+
+            user.FirstName = profile.FirstName;
+            user.LastName = profile.LastName;
+
+            if (avatarImage != null && avatarImage.IsImage())
+            {
+                var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(avatarImage.FileName);
+                avatarImage.AddImageToServer(imageName, PathExtension.UserAvatarOriginServer, 100, 100, PathExtension.UserAvatarThumbServer, user.Avatar);
+                user.Avatar = imageName;
+            }
+
+            _userRepository.EditEntity(user);
+            await _userRepository.SaveChanges();
+
+            return EditUserProfileResult.Success;
+        }
+
         #endregion
 
         #region Dispose
+
         public async ValueTask DisposeAsync()
         {
             await _userRepository.DisposeAsync();
         }
+
         #endregion
     }
 }

@@ -33,7 +33,7 @@
                         else
                         {
                             <ul>
-                                <li><a asp-controller="Account" asp-action="Register"> @User.Identity.Name ،خوش آمدید </a></li>
+                                <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard"> @User.Identity.Name ،خوش آمدید </a></li>
                                 <li><a asp-controller="Account" asp-action="LogOut"> خروج </a></li>
                             </ul>
                         }
@@ -251,7 +251,7 @@
                             else
                             {
                                 <ul>
-                                    <li><a asp-controller="Account" asp-action="Register"> @User.Identity.Name، خوش آمدید </a></li>
+                                    <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard"> @User.Identity.Name، خوش آمدید </a></li>
                                     <li><a asp-controller="Account" asp-action="LogOut"> خروج </a></li>
                                 </ul>
                             }

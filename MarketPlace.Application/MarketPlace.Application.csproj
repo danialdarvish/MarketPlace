@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MarketPlace.DataLayer\MarketPlace.DataLayer.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\MarketPlace.DataLayer\MarketPlace.DataLayer.csproj" />
+		<PackageReference Include="LazZiya.ImageResize" Version="2.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0005" />
+	</ItemGroup>
 
 </Project>

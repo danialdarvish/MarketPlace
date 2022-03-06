@@ -3,7 +3,7 @@ using MarketPlace.DataLayer.Entities.Contacts;
 
 namespace MarketPlace.DataLayer.DTOs.Contacts
 {
-    public class AddTicketViewModel
+    public class AddTicketDto
     {
 
         [Display(Name = "عنوان")]

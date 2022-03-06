@@ -1,6 +1,9 @@
 ﻿@using MarketPlace.DataLayer.Entities.Site
+@using MarketPlace.DataLayer.Entities.Account
+@using MarketPlace.Application.EntitiesExtensions
 @{
     var siteSetting = ViewBag.siteSetting as SiteSetting;
+    var user = ViewBag.user as User;
 }
 
 <!--header area start-->
@@ -33,7 +36,7 @@
                         else
                         {
                             <ul>
-                                <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard"> @User.Identity.Name ،خوش آمدید </a></li>
+                                <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard"> @user.GetUserShowName() ،خوش آمدید </a></li>
                                 <li><a asp-controller="Account" asp-action="LogOut"> خروج </a></li>
                             </ul>
                         }
@@ -251,7 +254,7 @@
                             else
                             {
                                 <ul>
-                                    <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard"> @User.Identity.Name، خوش آمدید </a></li>
+                                    <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard"> @user.GetUserShowName()، خوش آمدید </a></li>
                                     <li><a asp-controller="Account" asp-action="LogOut"> خروج </a></li>
                                 </ul>
                             }

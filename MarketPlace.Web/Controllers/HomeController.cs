@@ -81,6 +81,5 @@ namespace MarketPlace.Web.Controllers
         }
 
         #endregion
-
     }
 }

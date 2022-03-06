@@ -19,9 +19,15 @@ namespace MarketPlace.Web.Areas.User.Controllers
         #endregion
 
         #region List
-        public IActionResult Index()
+
+        [HttpGet("tickets")]
+        public async Task<IActionResult> Index(FilterTicketDto filter)
         {
-            return View();
+            filter.UserId = User.GetUserId();
+            filter.FilterTicketState = FilterTicketState.NotDeleted;
+            filter.OrderBy = FilterTicketOrder.CreateDate_DES;
+            
+            return View(await _contactService.FilterTickets(filter));
         }
 
         #endregion
@@ -35,7 +41,7 @@ namespace MarketPlace.Web.Areas.User.Controllers
         }
 
         [HttpPost("add-ticket"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTicket(AddTicketViewModel ticket)
+        public async Task<IActionResult> AddTicket(AddTicketDto ticket)
         {
             if (ModelState.IsValid)
             {
@@ -53,6 +59,19 @@ namespace MarketPlace.Web.Areas.User.Controllers
             }
 
             return View();
+        }
+
+        #endregion
+
+        #region Show ticket detail
+
+        [HttpGet("tickets/{ticketId}")]
+        public async Task<IActionResult> TicketDetail(long ticketId)
+        {
+            var ticket = await _contactService.GetTicketForShow(ticketId, User.GetUserId());
+            if (ticket == null) return NotFound();
+
+            return View(ticket);
         }
 
         #endregion

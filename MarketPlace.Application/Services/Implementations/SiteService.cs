@@ -25,10 +25,12 @@ namespace MarketPlace.Application.Services.Implementations
         #endregion
 
         #region Site Setting
+
         public async Task<SiteSetting> GetDefaultSiteSetting()
         {
             return await _siteSettingRepository.GetQuery().FirstOrDefaultAsync(x => x.IsDefault && !x.IsDelete);
         }
+
         #endregion
 
         #region Slider

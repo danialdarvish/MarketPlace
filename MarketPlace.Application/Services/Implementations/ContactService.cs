@@ -5,6 +5,7 @@ using MarketPlace.DataLayer.DTOs.Contacts;
 using MarketPlace.DataLayer.Entities.Contacts;
 using MarketPlace.DataLayer.Repository;
 using System.Threading.Tasks;
+using MarketPlace.DataLayer.DTOs.Paging;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarketPlace.Application.Services.Implementations
@@ -28,7 +29,7 @@ namespace MarketPlace.Application.Services.Implementations
 
         #region Ticket
 
-        public async Task<AddTicketResult> AddUserTicket(AddTicketViewModel ticket, long userId)
+        public async Task<AddTicketResult> AddUserTicket(AddTicketDto ticket, long userId)
         {
             if (string.IsNullOrEmpty(ticket.Text)) return AddTicketResult.Error;
 
@@ -103,7 +104,32 @@ namespace MarketPlace.Application.Services.Implementations
 
             #endregion
 
-            return filter;
+            #region Paging
+
+            var pager = Pager.Build(filter.PageId, await query.CountAsync(), filter.TakeEntity,
+                filter.ShowHowManyPageAfterAndBefore);
+            var allEntities = await query.Paging(pager).ToListAsync();
+
+
+            #endregion
+
+            return filter.SetPaging(pager).SetTickets(allEntities);
+        }
+
+        public async Task<TicketDetailDto> GetTicketForShow(long ticketId, long userId)
+        {
+            var ticket = await _ticketRepository.GetQuery().Include(x => x.Owner)
+                .FirstOrDefaultAsync(x => x.Id == ticketId);
+
+            if (ticket == null || ticket.OwnerId != userId) return null;
+
+            return new TicketDetailDto
+            {
+                Ticket = ticket,
+                TicketMessages = await _ticketMessageRepository.GetQuery()
+                    .OrderByDescending(x => x.CreateDate)
+                    .Where(x => x.TicketId == ticketId && !x.IsDelete).ToListAsync()
+            };
         }
 
         #endregion
@@ -114,7 +140,7 @@ namespace MarketPlace.Application.Services.Implementations
         {
             var newContact = new ContactUs
             {
-                UserId = userId != null && userId.Value != 0 ? userId.Value : (long?) null,
+                UserId = userId != null && userId.Value != 0 ? userId.Value : (long?)null,
                 Subject = contact.Subject,
                 FullName = contact.FullName,
                 Email = contact.Email,

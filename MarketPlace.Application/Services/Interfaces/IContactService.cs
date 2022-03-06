@@ -11,7 +11,7 @@ namespace MarketPlace.Application.Services.Interfaces
         Task<AddTicketResult> AddUserTicket(AddTicketDto ticket, long userId);
         Task<FilterTicketDto> FilterTickets(FilterTicketDto filter);
         Task<TicketDetailDto> GetTicketForShow(long ticketId, long userId);
-
+        Task<AnswerTicketResult> AnswerTicket(AnswerTicketDto answer, long userId);
         #endregion
 
         #region Contact us

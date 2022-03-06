@@ -45,8 +45,11 @@
                             <input type="password" asp-for="Password">
                             <span class="text-danger" asp-validation-for="Password"></span>
                         </p>
+                        @*<p>
+                            <input type="checkbox" asp-for="RememberMe" class="form-control"/> مرا به خاطر بسپر
+                        </p>*@
                         <p>
-                            <a asp-area="" asp-controller="Account" asp-action="ForgotPassword">کلمه عبور خود را فراموش کرده اید؟</a>
+                            <a asp-area="" asp-controller="Account" asp-action="ForgotPassword"><u>کلمه عبور خود را فراموش کرده اید؟</u></a>
                         </p>
                         <div class="login_submit">
                             <button type="submit">ورود</button>

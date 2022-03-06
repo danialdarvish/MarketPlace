@@ -52,7 +52,7 @@
                                                     <td>@ticket.Title</td>
                                                     <td>
                                                         <span class="danger">
-                                                            @ticket.TicketState.GetEnumName();
+                                                            @ticket.TicketState.GetEnumName()
                                                         </span>
                                                     </td>
                                                     <td><a asp-action="TicketDetail" asp-route-ticketId="@ticket.Id" class="view">نمایش جزییات</a></td>

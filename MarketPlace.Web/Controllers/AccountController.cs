@@ -13,6 +13,7 @@ namespace MarketPlace.Web.Controllers
     public class AccountController : SiteBaseController
     {
         #region Constructor
+
         private readonly IUserService _userService;
         private readonly ICaptchaValidator _captchaValidator;
         public AccountController(IUserService userService, ICaptchaValidator captchaValidator)
@@ -20,6 +21,7 @@ namespace MarketPlace.Web.Controllers
             _userService = userService;
             _captchaValidator = captchaValidator;
         }
+
         #endregion
 
         #region Register

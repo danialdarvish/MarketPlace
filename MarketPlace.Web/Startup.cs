@@ -29,6 +29,7 @@ namespace MarketPlace.Web
         public void ConfigureServices(IServiceCollection services)
         {
             #region Config Services
+
             services.AddControllersWithViews();
             services.AddHttpClient<ICaptchaValidator, GoogleReCaptchaValidator>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -36,6 +37,8 @@ namespace MarketPlace.Web
             services.AddScoped<IPasswordHelper, PasswordHelper>();
             services.AddScoped<ISiteService, SiteService>();
             services.AddScoped<IContactService, ContactService>();
+            services.AddScoped<ISellerService, SellerService>();
+
             #endregion
 
             #region Authentication

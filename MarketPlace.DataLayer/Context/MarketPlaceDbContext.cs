@@ -3,6 +3,7 @@ using MarketPlace.DataLayer.Entities.Contacts;
 using MarketPlace.DataLayer.Entities.Site;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using MarketPlace.DataLayer.Entities.Store;
 
 namespace MarketPlace.DataLayer.Context
 {
@@ -34,6 +35,12 @@ namespace MarketPlace.DataLayer.Context
         public DbSet<ContactUs> ContactUses { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketMessage> TicketMessages { get; set; }
+
+        #endregion
+
+        #region Store
+
+        public DbSet<Seller> Sellers { get; set; }
 
         #endregion
 

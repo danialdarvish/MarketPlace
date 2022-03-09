@@ -2,12 +2,14 @@
 using MarketPlace.DataLayer.Entities.Contacts;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using MarketPlace.DataLayer.Entities.Store;
 
 namespace MarketPlace.DataLayer.Entities.Account
 {
     public class User : BaseEntity
     {
         #region Properties
+
         [Display(Name = "ایمیل")]
         [MaxLength(200, ErrorMessage = "نمی توان بیشتر از {1} کاراکتر باشد {0}")]
         [EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نمی باشد")]
@@ -32,6 +34,7 @@ namespace MarketPlace.DataLayer.Entities.Account
 
         [Display(Name = "موبایل فعال / غیرفعال")]
         public bool IsMobileActive { get; set; }
+
         [Display(Name = "کلمه عبور")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(200, ErrorMessage = "نمی توان بیشتر از {1} کاراکتر باشد {0}")]
@@ -53,6 +56,7 @@ namespace MarketPlace.DataLayer.Entities.Account
 
         [Display(Name = "بلک شده / نشده")]
         public bool IsBlocked { get; set; }
+
         #endregion
 
         #region Relations 
@@ -60,6 +64,7 @@ namespace MarketPlace.DataLayer.Entities.Account
         public ICollection<ContactUs> ContactUses { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
         public ICollection<TicketMessage> TicketMessages { get; set; }
+        public ICollection<Seller> Sellers { get; set; }
 
         #endregion
     }

@@ -62,6 +62,7 @@ namespace MarketPlace.Web.Controllers
         #endregion
 
         #region Login
+
         [HttpGet("login")]
         public IActionResult Login()
         {
@@ -100,7 +101,7 @@ namespace MarketPlace.Web.Controllers
                         var principal = new ClaimsPrincipal(identity);
                         var properties = new AuthenticationProperties
                         {
-                            IsPersistent = login.RememberMe
+                            IsPersistent = true //login.RememberMe
                         };
 
                         await HttpContext.SignInAsync(principal, properties);
@@ -113,6 +114,7 @@ namespace MarketPlace.Web.Controllers
 
             return View(login);
         }
+
         #endregion
 
         #region Logout

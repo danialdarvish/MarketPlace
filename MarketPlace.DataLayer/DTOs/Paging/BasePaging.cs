@@ -19,5 +19,10 @@ namespace MarketPlace.DataLayer.DTOs.Paging
             TakeEntity = 10;
             ShowHowManyPageAfterAndBefore = 3;
         }
+
+        public BasePaging GetCurrentPaging()
+        {
+            return this;
+        }
     }
 }

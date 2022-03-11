@@ -1,7 +1,8 @@
-﻿@model MarketPlace.DataLayer.DTOs.Seller.RequestSellerDto
+﻿@model MarketPlace.DataLayer.DTOs.Seller.EditRequestSellerDto
 @{
-    ViewData["Title"] = "درخواست پنل فروشندگی";
+    ViewData["Title"] = "ویرایش درخواست";
 }
+
 
 @section scripts {
 <partial name="_JqueryValidators" />
@@ -36,23 +37,24 @@
                             <div class="login">
                                 <div class="login_form_container">
                                     <div class="account_login_form">
-                                        <form asp-area="User" asp-controller="Seller" asp-action="RequestSellerPanel">
+                                        <form asp-area="User" asp-controller="Seller" asp-action="EditRequestSeller">
+                                            <input type="hidden" asp-for="Id"/>
                                             <label>نام فروشگاه</label>
                                             <input type="text" asp-for="StoreName">
                                             <span class="text-danger" asp-validation-for="StoreName"></span>
-                                            <br />
+                                            <br/>
 
                                             <label>تلفن تماس فروشگاه</label>
                                             <input type="text" asp-for="Phone">
                                             <span class="text-danger" asp-validation-for="Phone"></span>
-                                            <br />
+                                            <br/>
 
                                             <label>آدرس فروشگاه</label>
                                             <textarea type="text" asp-for="Address" class="form-control" rows="12"></textarea>
                                             <span class="text-danger" asp-validation-for="Address"></span>
 
                                             <div class="save_button primary_btn default_button">
-                                                <button type="submit">ثبت اطلاعات</button>
+                                                <button type="submit">ویرایش اطلاعات</button>
                                             </div>
                                         </form>
                                     </div>
@@ -65,3 +67,4 @@
         </div>
     </div>
 </section>
+

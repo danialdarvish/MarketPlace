@@ -60,8 +60,45 @@ namespace MarketPlace.Web.Areas.User.Controllers
         #region Seller requests
 
         [HttpGet("seller-requests")]
-        public async Task<IActionResult> SellerRequests()
+        public async Task<IActionResult> SellerRequests(FilterSellerDto filter)
         {
+            filter.TakeEntity = 5;
+            filter.UserId = User.GetUserId();
+            filter.State = FilterSellerState.All;
+
+            return View(await _sellerService.FilterSellers(filter));
+        }
+
+        #endregion
+
+        #region Edit request
+
+        [HttpGet("edit-request-seller/{id}")]
+        public async Task<IActionResult> EditRequestSeller(long id)
+        {
+            var requestSeller = await _sellerService.GetRequestSellerForEdit(id, User.GetUserId());
+            if (requestSeller == null) return NotFound();
+            return View(requestSeller);
+        }
+
+        [HttpPost("edit-request-seller/{id}"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditRequestSeller(EditRequestSellerDto request)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _sellerService.EditRequestSeller(request, User.GetUserId());
+
+                switch (result)
+                {
+                    case EditRequestSellerResult.NotFound:
+                        TempData[ErrorMessage] = "اطلاعات مورد نظر یافت نشد";
+                        break;
+                    case EditRequestSellerResult.Success:
+                        TempData[SuccessMessage] = "اطلاعات مورد نظر با موفقیت ویرایش شد";
+                        TempData[InfoMessage] = "فرایند تایید اطلاعات از سر گرفته شد";
+                        return RedirectToAction("SellerRequests");
+                }
+            }
             return View();
         }
 

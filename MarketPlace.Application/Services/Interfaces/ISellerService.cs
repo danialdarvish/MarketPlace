@@ -9,6 +9,9 @@ namespace MarketPlace.Application.Services.Interfaces
         #region Seller
 
         Task<RequestSellerResult> AddNewSellerRequest(RequestSellerDto seller, long userId);
+        Task<FilterSellerDto> FilterSellers(FilterSellerDto filter);
+        Task<EditRequestSellerDto> GetRequestSellerForEdit(long id, long currentUserId);
+        Task<EditRequestSellerResult> EditRequestSeller(EditRequestSellerDto request, long currentUserId);
 
         #endregion
     }

@@ -1,5 +1,6 @@
 ﻿@using MarketPlace.Application.Extensions
 @using MarketPlace.DataLayer.DTOs.Seller
+@using MarketPlace.DataLayer.Entities.Store
 @model MarketPlace.DataLayer.DTOs.Seller.FilterSellerDto
 @{
     ViewData["Title"] = "درخواست های فروشندگی";
@@ -76,7 +77,7 @@
                 <tbody>
                     @foreach (var seller in Model.Sellers)
                     {
-                        <tr>
+                        <tr id="ajax-url-item-@seller.Id">
                             <td>
                                 @seller.Id
                             </td>
@@ -90,6 +91,10 @@
                                 @seller.StoreAcceptanceState.GetEnumName()
                             </td>
                             <td>
+                                @if (seller.StoreAcceptanceState != StoreAcceptanceState.Accepted)
+                                {
+                                    <a class="btn btn-success" ajax-url-button="@seller.Id" asp-area="Admin" asp-controller="Seller" asp-action="AcceptSellerRequest" asp-route-requestId="@seller.Id">تایید اطلاعات</a>
+                                }
                             </td>
                         </tr>
                     }
@@ -106,7 +111,7 @@
         }
 
         <div class="footer">
-            <partial name="_AdminPagingPartial" model="@Model.GetCurrentPaging()"/>
+            <partial name="_AdminPagingPartial" model="@Model.GetCurrentPaging()" />
         </div>
     </div>
 </div>

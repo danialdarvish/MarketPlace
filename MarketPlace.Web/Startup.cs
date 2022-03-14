@@ -38,6 +38,7 @@ namespace MarketPlace.Web
             services.AddScoped<ISiteService, SiteService>();
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<ISellerService, SellerService>();
+            services.AddScoped<IProductService, ProductService>();
 
             #endregion
 

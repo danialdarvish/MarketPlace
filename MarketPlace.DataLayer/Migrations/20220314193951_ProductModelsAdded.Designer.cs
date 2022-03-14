@@ -4,14 +4,16 @@ using MarketPlace.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MarketPlace.DataLayer.Migrations
 {
     [DbContext(typeof(MarketPlaceDbContext))]
-    partial class MarketPlaceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220314193951_ProductModelsAdded")]
+    partial class ProductModelsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,8 +271,6 @@ namespace MarketPlace.DataLayer.Migrations
                         .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SellerId");
 
                     b.ToTable("Products");
                 });
@@ -576,17 +576,6 @@ namespace MarketPlace.DataLayer.Migrations
                     b.Navigation("Sender");
 
                     b.Navigation("Ticket");
-                });
-
-            modelBuilder.Entity("MarketPlace.DataLayer.Entities.Products.Product", b =>
-                {
-                    b.HasOne("MarketPlace.DataLayer.Entities.Store.Seller", "Seller")
-                        .WithMany()
-                        .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("MarketPlace.DataLayer.Entities.Products.ProductCategory", b =>

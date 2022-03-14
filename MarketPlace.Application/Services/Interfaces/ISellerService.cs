@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MarketPlace.DataLayer.DTOs.Common;
 using MarketPlace.DataLayer.DTOs.Seller;
 
 namespace MarketPlace.Application.Services.Interfaces
@@ -13,6 +14,7 @@ namespace MarketPlace.Application.Services.Interfaces
         Task<EditRequestSellerDto> GetRequestSellerForEdit(long id, long currentUserId);
         Task<EditRequestSellerResult> EditRequestSeller(EditRequestSellerDto request, long currentUserId);
         Task<bool> AcceptSellerRequest(long requestId);
+        Task<bool> RejectSellerRequest(RejectItemDto reject);
 
         #endregion
     }

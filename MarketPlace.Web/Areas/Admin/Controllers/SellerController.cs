@@ -29,7 +29,7 @@ namespace MarketPlace.Web.Areas.Admin.Controllers
 
         #endregion
 
-        #region Accept seller request
+        #region Accepted seller request
 
         public async Task<IActionResult> AcceptSellerRequest(long requestId)
         {

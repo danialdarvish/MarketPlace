@@ -17,6 +17,16 @@ namespace MarketPlace.Application.Utils
 
         #endregion
 
+        #region Products
+
+        public static string ProductImage = "/content/images/product/origin/";
+        public static string ProductImageServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/product/origin/");
+
+        public static string ProductThumbnailImage = "/content/images/product/thumb/";
+        public static string ProductImageThumbnailServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/product/thumb/");
+
+        #endregion
+
         #region Slider
 
         public static string SliderOrigin = "/img/slider/";

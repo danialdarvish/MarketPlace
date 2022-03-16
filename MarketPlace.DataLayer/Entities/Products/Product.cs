@@ -22,7 +22,6 @@ namespace MarketPlace.DataLayer.Entities.Products
         public string ImageName { get; set; }
 
         [Display(Name = "قیمت محصول")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int Price { get; set; }
 
         [Display(Name = "توضیحات کوتاه")]
@@ -48,6 +47,7 @@ namespace MarketPlace.DataLayer.Entities.Products
         #region Relations
 
         public ICollection<ProductSelectedCategory> ProductSelectedCategories { get; set; }
+        public ICollection<ProductColor> ProductColors { get; set; }
         public Seller Seller { get; set; }
 
         #endregion
@@ -55,8 +55,13 @@ namespace MarketPlace.DataLayer.Entities.Products
 
     public enum ProductAcceptanceState
     {
+        [Display(Name = "در حال بررسی")]
         UnderProgress,
+
+        [Display(Name = "تایید شده")]
         Accepted,
+
+        [Display(Name = "رد شده")]
         Rejected
     }
 }

@@ -168,6 +168,14 @@ namespace MarketPlace.Application.Services.Implementations
             return false;
         }
 
+        public async Task<Seller> GetLastActiveSellerByUserId(long userId)
+        {
+            return await _sellerRepository
+                .GetQuery()
+                .OrderByDescending(x => x.CreateDate)
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.StoreAcceptanceState == StoreAcceptanceState.Accepted);
+        }
+
         #endregion
 
         #region Dispose

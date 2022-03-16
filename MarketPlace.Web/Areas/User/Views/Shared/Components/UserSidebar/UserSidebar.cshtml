@@ -1,12 +1,16 @@
-﻿<div class="dashboard_tab_button">
+﻿@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<div class="dashboard_tab_button">
     <ul role="tablist" class="nav flex-column dashboard-list">
-        <li><a asp-area="User" asp-controller="Home" asp-action="Index" class="nav-link active show">داشبورد</a></li>
-        <li><a asp-area="User" asp-controller="Account" asp-action="ChangePassword" class="nav-link">تغییر کلمه عبور</a></li>
-        <li><a asp-area="User" asp-controller="Account" asp-action="EditProfile" class="nav-link">ویرایش اطلاعات</a></li>
-        <li><a asp-area="User" asp-controller="Ticket" asp-action="AddTicket" class="nav-link">ثبت تیکت جدید</a></li>
-        <li><a asp-area="User" asp-controller="Ticket" asp-action="Index" class="nav-link">لیست تیکت ها</a></li>
-        <li><a asp-area="User" asp-controller="Seller" asp-action="RequestSellerPanel" class="nav-link">درخواست پنل فروشندگی</a></li>
-        <li><a asp-area="User" asp-controller="Seller" asp-action="SellerRequests" class="nav-link">درخواست های فروشندگی</a></li>
-        <li><a asp-area="User" asp-controller="Account" asp-action="LogOut" class="nav-link">خروج</a></li>
+        <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard" class="nav-link @(controller == "Home" && action == "Dashboard" ? "active show" : "")">داشبورد</a></li>
+        <li><a asp-area="User" asp-controller="Account" asp-action="ChangePassword" class="nav-link @(controller == "Account" && action == "ChangePassword" ? "active show" : "")">تغییر کلمه عبور</a></li>
+        <li><a asp-area="User" asp-controller="Account" asp-action="EditProfile" class="nav-link @(controller == "Account" && action == "EditProfile" ? "active show" : "")">ویرایش اطلاعات</a></li>
+        <li><a asp-area="User" asp-controller="Ticket" asp-action="AddTicket" class="nav-link @(controller == "Ticket" && action == "AddTicket" ? "active show" : "")">ثبت تیکت جدید</a></li>
+        <li><a asp-area="User" asp-controller="Ticket" asp-action="Index" class="nav-link @(controller == "Ticket" && action == "Index" ? "active show" : "")">لیست تیکت ها</a></li>
+        <li><a asp-area="User" asp-controller="Seller" asp-action="RequestSellerPanel" class="nav-link @(controller == "Seller" && action == "RequestSellerPanel" ? "active show" : "")">درخواست پنل فروشندگی</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="LogOut" class="nav-link">خروج</a></li>
     </ul>
 </div>

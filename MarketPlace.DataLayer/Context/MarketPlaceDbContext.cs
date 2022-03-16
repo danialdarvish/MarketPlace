@@ -50,6 +50,7 @@ namespace MarketPlace.DataLayer.Context
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductSelectedCategory> ProductSelectedCategories { get; set; }
+        public DbSet<ProductColor> ProductColors { get; set; }
 
         #endregion
 

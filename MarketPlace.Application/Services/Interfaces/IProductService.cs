@@ -11,12 +11,14 @@ namespace MarketPlace.Application.Services.Interfaces
         #region Products
 
         Task<FilterProductDto> FilterProducts(FilterProductDto filter);
+        Task<CreateProductResult> CreateProduct(CreateProductDto product, string imageName, long sellerId);
 
         #endregion
 
         #region ProductCategory
 
         Task<List<ProductCategory>> GetAllProductCategoriesByParentId(long? parentId);
+        Task<List<ProductCategory>> GetAllActiveProductCategories();
 
         #endregion
     }

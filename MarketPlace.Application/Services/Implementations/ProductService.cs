@@ -77,6 +77,32 @@ namespace MarketPlace.Application.Services.Implementations
             return filter.SetProducts(allEntities).SetPaging(pager);
         }
 
+        public async Task<CreateProductResult> CreateProduct(CreateProductDto product, string imageName, long sellerId)
+        {
+            // Create product
+            var newProduct = new Product
+            {
+                Title = product.Title,
+                Price = product.Price,
+                ShortDescription = product.ShortDescription,
+                Description = product.Description,
+                IsActive = product.IsActive,
+                SellerId = sellerId,
+                ImageName = imageName
+            };
+
+            await _productRepository.AddEntity(newProduct);
+            await _productRepository.SaveChanges();
+
+            // Create product categories
+
+
+            // Create product colors
+
+            return CreateProductResult.Success;
+        }
+
+
         #endregion
 
         #region ProductCategory
@@ -85,12 +111,18 @@ namespace MarketPlace.Application.Services.Implementations
         {
             if (parentId is null or 0)
                 return await _productCategoryRepository.GetQuery()
-                    .Where(x => !x.IsDelete && x.IsActive)
+                    .Where(x => !x.IsDelete && x.IsActive && x.ParentId == null)
                     .ToListAsync();
 
             return await _productCategoryRepository.GetQuery()
                 .Where(x => !x.IsDelete && x.IsActive && x.ParentId == parentId)
                 .ToListAsync();
+        }
+
+        public async Task<List<ProductCategory>> GetAllActiveProductCategories()
+        {
+            return await _productCategoryRepository.GetQuery()
+                .Where(x => x.IsActive && !x.IsDelete).ToListAsync();
         }
 
         #endregion

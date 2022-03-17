@@ -2,6 +2,7 @@
 using MarketPlace.Application.Services.Interfaces;
 using MarketPlace.DataLayer.DTOs.Product;
 using MarketPlace.Web.PresentationExtensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketPlace.Web.Areas.Seller.Controllers
@@ -23,7 +24,7 @@ namespace MarketPlace.Web.Areas.Seller.Controllers
 
         #region List
 
-        [HttpGet("products")]
+        [HttpGet("list")]
         public async Task<IActionResult> Index(FilterProductDto filter)
         {
             var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
@@ -39,21 +40,22 @@ namespace MarketPlace.Web.Areas.Seller.Controllers
         [HttpGet("create-product")]
         public async Task<IActionResult> CreateProduct()
         {
-            ViewBag.MainCategories = await _productService.GetAllProductCategoriesByParentId(null);
+            ViewBag.Categories = await _productService.GetAllActiveProductCategories();
             return View();
         }
 
         [HttpPost("create-product"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateProduct(CreateProductDto product)
+        public async Task<IActionResult> CreateProduct(CreateProductDto product, IFormFile productImage)
         {
             if (ModelState.IsValid)
             {
                 // todo: Create product
             }
 
-            ViewBag.MainCategories = await _productService.GetAllProductCategoriesByParentId(null);
+            ViewBag.Categories = await _productService.GetAllProductCategoriesByParentId(null);
             return View(product);
         }
+
         #endregion
     }
 }

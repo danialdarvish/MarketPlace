@@ -12,8 +12,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace MarketPlace.Web
 {
@@ -39,6 +41,16 @@ namespace MarketPlace.Web
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<ISellerService, SellerService>();
             services.AddScoped<IProductService, ProductService>();
+
+            #endregion
+
+            #region Data protection
+
+            services
+                .AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory() + "\\wwwroot\\Auth\\"))
+                .SetApplicationName("MarketPlaceProject")
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
             #endregion
 

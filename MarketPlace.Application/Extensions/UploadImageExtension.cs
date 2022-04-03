@@ -6,7 +6,7 @@ namespace MarketPlace.Application.Extensions
 {
     public static class UploadImageExtension
     {
-        public static void AddImageToServer(this IFormFile image, string fileName, string originalPath, int? width, int? height, string thumbPath = null, string deleteFileName = null)
+        public static bool AddImageToServer(this IFormFile image, string fileName, string originalPath, int? width, int? height, string thumbPath = null, string deleteFileName = null)
         {
             if (image != null && image.IsImage())
             {
@@ -43,7 +43,11 @@ namespace MarketPlace.Application.Extensions
                     if (width != null && height != null)
                         resizer.ImageResizer(originalPath + fileName, thumbPath + fileName, width, height);
                 }
+
+                return true;
             }
+
+            return false;
         }
 
         public static void DeleteImage(this string imageName, string OriginPath, string ThumbPath)

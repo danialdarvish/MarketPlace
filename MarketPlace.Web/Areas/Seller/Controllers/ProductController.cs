@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MarketPlace.Application.Services.Interfaces;
 using MarketPlace.DataLayer.DTOs.Product;
 using MarketPlace.Web.Http;
@@ -30,7 +31,7 @@ namespace MarketPlace.Web.Areas.Seller.Controllers
         {
             var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
             filter.SellerId = seller.Id;
-            filter.FilterProductState = FilterProductState.Active;
+            filter.FilterProductState = FilterProductState.All;
             return View(await _productService.FilterProducts(filter));
         }
 
@@ -50,10 +51,65 @@ namespace MarketPlace.Web.Areas.Seller.Controllers
         {
             if (ModelState.IsValid)
             {
-                // todo: Create product
+                var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
+                var result = await _productService.CreateProduct(product, seller.Id, productImage);
+
+                switch (result)
+                {
+                    case CreateProductResult.Success:
+                        TempData[SuccessMessage] = $"محصول مورد نظر با عنوان {product.Title} با موفقیت ثبت شد ";
+                        return RedirectToAction("Index");
+                    case CreateProductResult.HasNoImage:
+                        TempData[WarningMessage] = "لطفا تصویر محصول را وارد نمایید";
+                        break;
+                    case CreateProductResult.Error:
+                        TempData[ErrorMessage] = "عملیات ثبت محصول با خطا مواجه شد";
+                        break;
+                }
             }
 
             ViewBag.Categories = await _productService.GetAllProductCategoriesByParentId(null);
+            return View(product);
+        }
+
+        #endregion
+
+        #region Edit product
+
+        [HttpGet("edit-product/{productId}")]
+        public async Task<IActionResult> EditProduct(long productId)
+        {
+            var product = await _productService.GetProductForEdit(productId);
+            if (product == null) return NotFound();
+            ViewBag.Categories = await _productService.GetAllActiveProductCategories();
+
+            return View(product);
+        }
+
+        [HttpPost("edit-product/{productId}"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProduct(long productId, EditProductDto product, IFormFile productImage)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _productService
+                    .EditSellerProduct(product, User.GetUserId(), productImage);
+
+                switch (result)
+                {
+                    case EditProductResult.NotFound:
+                        TempData[ErrorMessage] = "اطلاعات وارد شده یافت نشد";
+                        break;
+                    case EditProductResult.NotForUser:
+                        TempData[WarningMessage] = "در ویرایش اطلاعات خطایی رخ داد";
+                        break;
+                    case EditProductResult.Success:
+                        TempData[SuccessMessage] = "عملیات با موفقیت انجام شد";
+                        return RedirectToAction("Index");
+                }
+            }
+
+            ViewBag.Categories = await _productService.GetAllActiveProductCategories();
+
             return View(product);
         }
 
@@ -66,7 +122,7 @@ namespace MarketPlace.Web.Areas.Seller.Controllers
         {
             var categories = await _productService.GetAllProductCategoriesByParentId(parentId);
 
-            return JsonResponseStatus.SendStatus(JsonResponseStatusType.Success, 
+            return JsonResponseStatus.SendStatus(JsonResponseStatusType.Success,
                 "اطلاعات دسته بندی ها", categories);
         }
 

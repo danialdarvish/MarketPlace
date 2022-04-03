@@ -32,6 +32,7 @@ namespace MarketPlace.DataLayer.DTOs.Product
     public enum CreateProductResult
     {
         Success,
-        Error
+        HasNoImage,
+        Error,
     }
 }

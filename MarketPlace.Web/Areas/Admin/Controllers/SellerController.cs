@@ -49,10 +49,14 @@ namespace MarketPlace.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> RejectSellerRequest(RejectItemDto reject)
         {
-            var result = await _sellerService.RejectSellerRequest(reject);
-            if (result)
-                return JsonResponseStatus.SendStatus(JsonResponseStatusType.Success,
-                    "درخواست مورد نظر شما با موفقیت رد شد", reject);
+            if (ModelState.IsValid)
+            {
+                var result = await _sellerService.RejectSellerRequest(reject);
+                if (result)
+                    return JsonResponseStatus.SendStatus(JsonResponseStatusType.Success,
+                        "درخواست مورد نظر شما با موفقیت رد شد", reject);
+
+            }
 
             return JsonResponseStatus.SendStatus(JsonResponseStatusType.Danger,
                 "اطلاعاتی با این مشخصات یافت نشد", null);

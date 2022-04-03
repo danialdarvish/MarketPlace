@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using MarketPlace.DataLayer.DTOs.Paging;
 
 namespace MarketPlace.DataLayer.DTOs.Product
@@ -41,10 +42,22 @@ namespace MarketPlace.DataLayer.DTOs.Product
 
     public enum FilterProductState
     {
+        [Display(Name = "همه")]
+        All,
+
+        [Display(Name = "در حال بررسی")]
         UnderProgress,
+        
+        [Display(Name = "تایید شده")]
         Accepted,
+
+        [Display(Name = "رد شده")]
         Rejected,
+
+        [Display(Name = "فعال")]
         Active,
+
+        [Display(Name = "غیرفعال")]
         NotActive
     }
 }

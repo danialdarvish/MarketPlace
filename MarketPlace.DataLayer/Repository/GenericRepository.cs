@@ -2,6 +2,7 @@
 using MarketPlace.DataLayer.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,6 +26,14 @@ namespace MarketPlace.DataLayer.Repository
             await _dbSet.AddAsync(entity);
         }
 
+        public async Task AddRangeEntity(List<TEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                await AddEntity(entity);
+            }
+        }
+
         public void DeleteEntity(TEntity entity)
         {
             entity.IsDelete = true;
@@ -40,6 +49,11 @@ namespace MarketPlace.DataLayer.Repository
         public void DeletePermanent(TEntity entity)
         {
             _dbSet.Remove(entity);
+        }
+
+        public void DeletePermanentEntities(List<TEntity> entities)
+        {
+            _context.RemoveRange(entities);
         }
 
         public async Task DeletePermanent(long id)

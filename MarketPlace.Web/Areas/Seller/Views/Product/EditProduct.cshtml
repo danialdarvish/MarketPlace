@@ -1,7 +1,8 @@
 ﻿@using MarketPlace.DataLayer.Entities.Products
-@model MarketPlace.DataLayer.DTOs.Product.CreateProductDto
+@using MarketPlace.Application.Utils
+@model MarketPlace.DataLayer.DTOs.Product.EditProductDto
 @{
-    ViewData["Title"] = "ثبت محصول";
+    ViewData["Title"] = "ویرایش" + Model.Title;
     var categories = ViewBag.Categories as List<ProductCategory>;
 }
 
@@ -35,8 +36,19 @@
                             <div class="login">
                                 <div class="login_form_container">
                                     <div class="account_login_form">
-                                        <form asp-area="Seller" asp-controller="Product" asp-action="CreateProduct" enctype="multipart/form-data"
-                                              id="create_product_form">
+                                        <form asp-area="Seller" asp-controller="Product" asp-action="EditProduct" enctype="multipart/form-data"id="create_product_form">
+                                            <input asp-for="Id" type="hidden" />
+                                            <input asp-for="ImageName" type="hidden" />
+                                            @if (Model.ProductColors != null & Model.ProductColors.Any())
+                                            {
+                                                var index = 0;
+                                                @foreach (var color in Model.ProductColors)
+                                                {
+                                                            <input type="hidden" value="@color.ColorName" name="ProductColors[@index].ColorName" color-name-hidden-input="@color.ColorName-@color.Price">
+                                                            <input type="hidden" value="@color.Price" name="ProductColors[@index].Price" color-price-hidden-input="@color.ColorName-@color.Price">
+                                                    index++;
+                                                }
+                                            }
                                             <label>نام محصول</label>
                                             <input asp-for="Title">
                                             <span class="text-danger" asp-validation-for="Title"></span>
@@ -59,43 +71,48 @@
                                             <br />
 
                                             <label>
-                                                <input type="checkbox" name="@nameof(Model.IsActive)" value="true" /> فعال / غیرفعال
+                                                <input type="checkbox" name="@nameof(Model.IsActive)" value="true" @(Model.IsActive ? "checked" : "") /> فعال / غیرفعال
                                             </label>
                                             <br />
 
+                                            <img src="@(PathExtension.ProductThumbnailImage + Model.ImageName)" />
                                             <div class="col-md-9">
                                                 <input type="file" name="productImage" accept=".png,.jpeg" />
                                             </div>
                                             <hr />
+
                                             @if (categories != null && categories.Any())
                                             {
                                                 @foreach (var category in categories.Where(x => x.ParentId == null))
                                                 {
-                                                    <ul>
-                                                        <li>
-                                                            <label>
-                                                                <input type="checkbox" name="@nameof(Model.SelectedCategories)" value="@category.Id" main_category_checkbox="@category.Id" /> @category.Title
-                                                            </label>
+                                                    var isParentCategorySelected = Model.SelectedCategories.Any(x => x == category.Id);
+                                                            <ul>
+                                                                <li>
+                                                                    <label>
+                                                                        <input type="checkbox" name="@nameof(Model.SelectedCategories)" value="@category.Id" main_category_checkbox="@category.Id" @(isParentCategorySelected ? "checked" : "") /> @category.Title
+                                                                    </label>
 
-                                                            <div id="sub_categories_@category.Id" style="display: none">
+                                                                    <div id="sub_categories_@category.Id" style="display: @(isParentCategorySelected ? "block" : "none")">
                                                                 @foreach (var subCategory in categories.Where(x => x.ParentId == category.Id))
                                                                 {
-                                                                    <label>
-                                                                        <input type="checkbox" name="@nameof(Model.SelectedCategories)" value="@subCategory.Id" main_category_checkbox="@subCategory.Id" parent-category-id="@category.Id" /> @subCategory.Title
-                                                                    </label>
-                                                                    <div id="sub_categories_@subCategory.Id" style="display: none">
+                                                                    var isSubCategorySelected = Model.SelectedCategories.Any(x => x == subCategory.Id);
+                                                                                <label>
+                                                                                    <input type="checkbox" name="@nameof(Model.SelectedCategories)" value="@subCategory.Id" main_category_checkbox="@subCategory.Id" parent-category-id="@category.Id" @(isSubCategorySelected ? "checked" : "") /> @subCategory.Title
+                                                                                </label>
+                                                                                <div id="sub_categories_@subCategory.Id" style="display: @(isSubCategorySelected ? "block" : "none")">
                                                                         @foreach (var secondSubCategory in categories.Where(x => x.ParentId == subCategory.Id))
                                                                         {
-                                                                            <label>
-                                                                                <input type="checkbox" name="@nameof(Model.SelectedCategories)" value="@secondSubCategory.Id" parent-category-id="@subCategory.Id" /> @secondSubCategory.Title
-                                                                            </label>
+                                                                            var isSecondSubCategorySelected = Model.SelectedCategories.Any(x => x == secondSubCategory.Id);
+                                                                                            <label>
+                                                                                                <input type="checkbox" name="@nameof(Model.SelectedCategories)" value="@secondSubCategory.Id" parent-category-id="@subCategory.Id" @(isSecondSubCategorySelected ? "checked" : "") /> @secondSubCategory.Title
+                                                                                            </label>
                                                                         }
-                                                                    </div>
+                                                                                </div>
                                                                 }
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                    <hr />
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                            <hr />
                                                 }
                                             }
 
@@ -118,12 +135,25 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody id="list_of_product_colors">
+                                                        @if (Model.ProductColors != null && Model.ProductColors.Any())
+                                                        {
+                                                            @foreach (var color in Model.ProductColors)
+                                                            {
+                                                                        <tr color-table-item="@color.ColorName-@color.Price">
+                                                                            <td>@color.ColorName</td>
+                                                                            <td>@color.Price</td>
+                                                                            <td>
+                                                                                <a class="btn btn-danger text-white" onclick="removeProductColor('@color.ColorName-@color.Price')">حذف</a>
+                                                                            </td>
+                                                                        </tr>
+                                                            }
+                                                        }
                                                     </tbody>
                                                 </table>
                                             </div>
 
                                             <div class="save_button primary_btn default_button">
-                                                <button type="submit">افزودن</button>
+                                                <button type="submit">ویرایش</button>
                                             </div>
                                         </form>
                                     </div>

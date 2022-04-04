@@ -199,6 +199,7 @@ namespace MarketPlace.Application.Services.Implementations
             mainProduct.Price = product.Price;
             mainProduct.Description = product.Description;
             mainProduct.IsActive = product.IsActive;
+            mainProduct.ProductAcceptanceState = ProductAcceptanceState.UnderProgress;
 
             if (productImage != null)
             {

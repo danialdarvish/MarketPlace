@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MarketPlace.Application.Services.Interfaces;
 using MarketPlace.DataLayer.DTOs.Seller;
 using MarketPlace.Web.PresentationExtensions;

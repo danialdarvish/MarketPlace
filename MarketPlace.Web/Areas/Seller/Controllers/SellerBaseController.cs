@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MarketPlace.Web.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketPlace.Web.Areas.Seller.Controllers
 {
     [Authorize]
+    [CheckSellerState]
     [Area("Seller")]
     [Route("seller")]
     public class SellerBaseController : Controller

@@ -1,4 +1,6 @@
 ﻿@{
+    var hasUserAnyActiveSeller = (bool)ViewBag.hasUserAnyActiveSeller;
+
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     var action = ViewContext.RouteData.Values["action"]?.ToString();
 }
@@ -6,6 +8,10 @@
 <div class="dashboard_tab_button">
     <ul role="tablist" class="nav flex-column dashboard-list">
         <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard" class="nav-link @(controller == "Home" && action == "Dashboard" ? "active show" : "")">داشبورد</a></li>
+        @if (hasUserAnyActiveSeller)
+        {
+            <li><a asp-area="Seller" asp-controller="Home" asp-action="Index" class="nav-link @(controller == "Home" && action == "Index" ? "active show" : "")">مشاهده پنل فروشندگی</a></li>
+        }
         <li><a asp-area="User" asp-controller="Account" asp-action="ChangePassword" class="nav-link @(controller == "Account" && action == "ChangePassword" ? "active show" : "")">تغییر کلمه عبور</a></li>
         <li><a asp-area="User" asp-controller="Account" asp-action="EditProfile" class="nav-link @(controller == "Account" && action == "EditProfile" ? "active show" : "")">ویرایش اطلاعات</a></li>
         <li><a asp-area="User" asp-controller="Ticket" asp-action="AddTicket" class="nav-link @(controller == "Ticket" && action == "AddTicket" ? "active show" : "")">ثبت تیکت جدید</a></li>

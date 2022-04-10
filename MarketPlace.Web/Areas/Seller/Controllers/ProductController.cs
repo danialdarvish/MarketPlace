@@ -24,6 +24,8 @@ namespace MarketPlace.Web.Areas.Seller.Controllers
 
         #endregion
 
+        #region Product
+
         #region List
 
         [HttpGet("products-list")]
@@ -112,6 +114,113 @@ namespace MarketPlace.Web.Areas.Seller.Controllers
 
             return View(product);
         }
+
+        #endregion
+
+
+        #endregion
+
+        #region Product Galleries
+
+        #region List
+
+        [HttpGet("product-galleries/{id}")]
+        public async Task<IActionResult> GetProductGalleries(long id)
+        {
+            ViewBag.productId = id;
+            var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
+            return View(await _productService.GetAllProductGalleriesInSellerPanel(id, seller.Id));
+        }
+
+        #endregion
+
+        #region Create
+
+        [HttpGet("create-product-gallery/{productId}")]
+        public async Task<IActionResult> CreateProductGallery(long productId)
+        {
+            var product = await _productService.GetProductBySellerOwnerId(productId, User.GetUserId());
+            if (product == null) return NotFound();
+            ViewBag.product = product;
+
+            return View();
+        }
+
+        [HttpPost("create-product-gallery/{productId}"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateProductGallery(long productId, CreateOrEditProductGalleryDto gallery)
+        {
+            if (ModelState.IsValid)
+            {
+                var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
+                var result = await _productService.CreateProductGallery(gallery, productId, seller.Id);
+
+                switch (result)
+                {
+                    case CreateOrEditProductGalleryResult.Success:
+                        TempData[SuccessMessage] = "عملیات ثبت گالری محصول با موفقیت انجام شد";
+                        return RedirectToAction("GetProductGalleries", "Product", new { id = productId });
+                    case CreateOrEditProductGalleryResult.NotForUserProduct:
+                        TempData[ErrorMessage] = "لطفا شلوغ کاری نکنید";
+                        break;
+                    case CreateOrEditProductGalleryResult.ImageIsNull:
+                        TempData[WarningMessage] = "تصویر مربوطه را وارد نمایید";
+                        break;
+                    case CreateOrEditProductGalleryResult.GalleryNotFound:
+                        TempData[WarningMessage] = "محصول مورد نظر پیدا نشد";
+                        break;
+                }
+            }
+
+            var product = await _productService.GetProductBySellerOwnerId(productId, User.GetUserId());
+            if (product == null) return NotFound();
+            ViewBag.product = product;
+
+            return View(gallery);
+        }
+
+        #endregion
+
+        #region Edit
+
+        [HttpGet("product_{productId}/edit-gallery/{galleryId}")]
+        public async Task<IActionResult> EditGallery(long productId, long galleryId)
+        {
+            var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
+            var mainGallery = await _productService.GetProductGalleryForEdit(galleryId, seller.Id);
+            if (mainGallery == null) return NotFound();
+
+            return View(mainGallery);
+        }
+
+
+        [HttpPost("product_{productId}/edit-gallery/{galleryId}")]
+        public async Task<IActionResult> EditGallery(long productId, long galleryId, CreateOrEditProductGalleryDto gallery)
+        {
+            if (ModelState.IsValid)
+            {
+                var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
+                var result = await _productService.EditProductGallery(galleryId, seller.Id, gallery);
+
+                switch (result)
+                {
+                    case CreateOrEditProductGalleryResult.Success:
+                        TempData[SuccessMessage] = "اطلاعات مورد نظر با موفقیت ویرایش شد";
+                        return RedirectToAction("GetProductGalleries", "Product", new { id = productId });
+                    case CreateOrEditProductGalleryResult.NotForUserProduct:
+                        TempData[ErrorMessage] = "این اطلاعات برای شما غیر قابل دسترسی می باشند";
+                        break;
+                    case CreateOrEditProductGalleryResult.ImageIsNull:
+                        TempData[ErrorMessage] = "لطفا تصویر را به درستی انتخاب کنید";
+                        break;
+                    case CreateOrEditProductGalleryResult.GalleryNotFound:
+                        TempData[WarningMessage] = "اطلاعات مورد نظر یافت نشد";
+                        break;
+                }
+            }
+            return View();
+        }
+
+        #endregion
 
         #endregion
 

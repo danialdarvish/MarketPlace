@@ -12,6 +12,7 @@ namespace MarketPlace.DataLayer.DTOs.Product
         public long? SellerId { get; set; }
         public List<Entities.Products.Product> Products { get; set; }
         public FilterProductState FilterProductState { get; set; }
+        public List<long> SelectedProductCategories { get; set; }
 
         #endregion
 

@@ -1,9 +1,35 @@
 ﻿@using MarketPlace.Application.Utils
+@using MarketPlace.DataLayer.DTOs.Product
 @using MarketPlace.DataLayer.Entities.Products
 @model MarketPlace.DataLayer.DTOs.Product.FilterProductDto
 @{
     ViewData["Title"] = "FilterProducts";
     var productCategories = ViewBag.ProductCategories as List<ProductCategory>;
+}
+
+@section scripts{
+<script>
+    /*---slider-range here---*/
+    $("#slider-range").slider({
+        range: true,
+        min: @Model.FilterMinPrice,
+        max: @Model.FilterMaxPrice,
+        step: @Model.PriceStep,
+        values: [@Model.SelectedMinPrice, @Model.SelectedMaxPrice],
+        slide: function (event, ui) {
+            var $value0 = ui.values[0].toLocaleString();
+            var $value1 = ui.values[1].toLocaleString();
+            $("#amount").val($value1 + " تومان - " + $value0 + " تومان");
+            $("#price-min").val(ui.values[0]);
+            $("#price-max").val(ui.values[1]);
+        }
+    });
+    var $value0 = $("#slider-range").slider("values", 0).toLocaleString();
+    var $value1 = $("#slider-range").slider("values", 1).toLocaleString();
+    $("#amount").val($value1 + " تومان - " + $value0 + " تومان");
+    $("#price-min").val($("#slider-range").slider("values", 0));
+    $("#price-max").val($("#slider-range").slider("values", 1));
+</script>
 }
 
 <div class="breadcrumbs_area">
@@ -25,6 +51,8 @@
 
 <form asp-area="" asp-controller="Product" asp-action="FilterProducts" method="get" id="filter-form">
     <input type="hidden" asp-for="PageId" />
+    <input type="hidden" asp-for="FilterMinPrice" />
+    <input type="hidden" asp-for="FilterMaxPrice" />
     <div class="shop_area shop_reverse mt-60 mb-60">
         <div class="container">
             <div class="row">
@@ -60,8 +88,8 @@
                                 <div id="slider-range"></div>
                                 <input type="text" id="amount">
                                 <button type="submit">فیلتر</button>
-                                <input type="hidden" id="price-min" name="price_min" value="700000">
-                                <input type="hidden" id="price-max" name="price_max" value="4000000">
+                                <input type="hidden" id="price-min" asp-for="SelectedMinPrice">
+                                <input type="hidden" id="price-max" asp-for="SelectedMaxPrice">
                             </div>
                             <div class="widget_list">
                                 <h2>مقایسه محصولات</h2>
@@ -165,15 +193,9 @@
                         </div>
                         <div class="niceselect_container">
                             <label>ترتیب:</label>
-                            <select class="select_option" name="orderby" id="short" style="display: none;">
-                                <option selected="" value="1">امتیاز متوسط</option>
-                                <option value="2">محبوبیت</option>
-                                <option value="3">تعداد فروش</option>
-                                <option value="4">قیمت صعودی</option>
-                                <option value="5">قیمت نزولی</option>
-                                <option value="6">نام محصول</option>
+                            <select class="select_option" asp-for="FilterProductOrderBy" asp-items="@Html.GetEnumSelectList<FilterProductOrderBy>()">
+
                             </select>
-                            <div class="nice-select select_option" tabindex="0"><span class="current">امتیاز متوسط</span><ul class="list"><li data-value="1" class="option selected focus">امتیاز متوسط</li><li data-value="2" class="option">محبوبیت</li><li data-value="3" class="option">تعداد فروش</li><li data-value="4" class="option">قیمت صعودی</li><li data-value="5" class="option">قیمت نزولی</li><li data-value="6" class="option">نام محصول</li></ul></div>
                         </div>
                         <div class="page_amount">
                             <p>@Model.GetCurrentPagingStatus() محصول</p>

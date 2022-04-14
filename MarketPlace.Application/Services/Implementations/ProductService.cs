@@ -66,6 +66,24 @@ namespace MarketPlace.Application.Services.Implementations
                     break;
             }
 
+            switch (filter.FilterProductOrderBy)
+            {
+                case FilterProductOrderBy.CreateDate_Des:
+                    query = query.OrderByDescending(x => x.CreateDate);
+                    break;
+                case FilterProductOrderBy.CreateDate_Asc:
+                    query = query.OrderBy(x => x.CreateDate);
+                    break;
+                case FilterProductOrderBy.Price_Des:
+                    query = query.OrderByDescending(x => x.Price);
+                    break;
+                case FilterProductOrderBy.Price_Asc:
+                    query = query.OrderBy(x => x.Price);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             #endregion
 
             #region Filter
@@ -74,6 +92,13 @@ namespace MarketPlace.Application.Services.Implementations
                 query = query.Where(x => EF.Functions.Like(x.Title, $"%{filter.Title}%"));
             if (filter.SellerId != null && filter.SellerId != 0)
                 query = query.Where(x => x.SellerId == filter.SellerId.Value);
+
+            var expensiveProduct = await query.OrderByDescending(x => x.Price).FirstOrDefaultAsync();
+            filter.FilterMaxPrice = expensiveProduct.Price;
+            if (filter.SelectedMaxPrice == 0) filter.SelectedMaxPrice = expensiveProduct.Price;
+
+            query = query.Where(x => x.Price >= filter.SelectedMinPrice);
+            query = query.Where(x => x.Price <= filter.SelectedMaxPrice);
 
             #endregion
 

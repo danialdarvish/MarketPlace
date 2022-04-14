@@ -130,3 +130,7 @@ function reOrderProductColorHiddenInput() {
         $(hiddenPrice).attr('name', 'ProductColors[' + index + '].Price');
     });
 }
+
+$('#FilterProductOrderBy').on('change', function () {
+    $('#filter-form').submit();
+});

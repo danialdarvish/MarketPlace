@@ -21,6 +21,7 @@ namespace MarketPlace.Web.Controllers
         #region Filter products
 
         [HttpGet("products")]
+        [HttpGet("products/{Category}")]
         public async Task<IActionResult> FilterProducts(FilterProductDto filter)
         {
             filter.TakeEntity = 9;

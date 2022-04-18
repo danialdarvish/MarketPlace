@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MarketPlace.Application.Services.Interfaces;
 using MarketPlace.DataLayer.DTOs.Product;
@@ -91,6 +92,19 @@ namespace MarketPlace.Web.Areas.Seller.Controllers
         [HttpPost("edit-product/{productId}"), ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProduct(long productId, EditProductDto product, IFormFile productImage)
         {
+            #region Model Errors
+            //if (!ModelState.IsValid)
+            //{
+            //    var modelErrors = new List<string>();
+            //    foreach (var modelState in ModelState.Values)
+            //    {
+            //        foreach (var modelError in modelState.Errors)
+            //        {
+            //            modelErrors.Add(modelError.ErrorMessage);
+            //        }
+            //    }
+            //}
+            #endregion
             if (ModelState.IsValid)
             {
                 var result = await _productService

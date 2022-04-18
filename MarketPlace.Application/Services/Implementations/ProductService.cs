@@ -46,6 +46,9 @@ namespace MarketPlace.Application.Services.Implementations
                 .ThenInclude(x => x.ProductCategory)
                 .AsQueryable();
 
+            var expensiveProduct = await query.OrderByDescending(x => x.Price).FirstOrDefaultAsync();
+            filter.FilterMaxPrice = expensiveProduct.Price;
+
             #region State
 
             switch (filter.FilterProductState)
@@ -54,7 +57,7 @@ namespace MarketPlace.Application.Services.Implementations
                     query = query.Where(x => x.ProductAcceptanceState == ProductAcceptanceState.UnderProgress);
                     break;
                 case FilterProductState.Accepted:
-                    query = query.Where(x => x.ProductAcceptanceState == ProductAcceptanceState.Accepted);
+                    query = query.Where(x => x.ProductAcceptanceState == ProductAcceptanceState.Accepted && x.IsActive);
                     break;
                 case FilterProductState.Rejected:
                     query = query.Where(x => x.ProductAcceptanceState == ProductAcceptanceState.Rejected);
@@ -95,9 +98,6 @@ namespace MarketPlace.Application.Services.Implementations
                 query = query.Where(x => EF.Functions.Like(x.Title, $"%{filter.Title}%"));
             if (filter.SellerId != null && filter.SellerId != 0)
                 query = query.Where(x => x.SellerId == filter.SellerId.Value);
-
-            var expensiveProduct = await query.OrderByDescending(x => x.Price).FirstOrDefaultAsync();
-            filter.FilterMaxPrice = expensiveProduct.Price;
             if (filter.SelectedMaxPrice == 0) filter.SelectedMaxPrice = expensiveProduct.Price;
 
             query = query.Where(x => x.Price >= filter.SelectedMinPrice);
@@ -211,7 +211,8 @@ namespace MarketPlace.Application.Services.Implementations
                     .Select(x => new CreateProductColorDto
                     {
                         ColorName = x.ColorName,
-                        Price = x.Price
+                        Price = x.Price,
+                        ColorCode = x.ColorCode
                     }).ToListAsync(),
                 SelectedCategories = await _productSelectedCategoryRepository.GetQuery()
                     .Where(x => x.ProductId == productId && !x.IsDelete)
@@ -286,22 +287,26 @@ namespace MarketPlace.Application.Services.Implementations
 
         public async Task AddProductSelectedColors(long productId, List<CreateProductColorDto> colors)
         {
-            var productSelectedColors = new List<ProductColor>();
-
-            foreach (var productColor in colors)
+            if (colors != null && colors.Any())
             {
-                if (productSelectedColors.All(x => x.ColorName != productColor.ColorName))
-                {
-                    productSelectedColors.Add(new ProductColor
-                    {
-                        ColorName = productColor.ColorName,
-                        Price = productColor.Price,
-                        ProductId = productId
-                    });
-                }
-            }
+                var productSelectedColors = new List<ProductColor>();
 
-            await _productColorRepository.AddRangeEntity(productSelectedColors);
+                foreach (var productColor in colors)
+                {
+                    if (productSelectedColors.All(x => x.ColorName != productColor.ColorName))
+                    {
+                        productSelectedColors.Add(new ProductColor
+                        {
+                            ColorName = productColor.ColorName,
+                            ColorCode = productColor.ColorCode,
+                            Price = productColor.Price,
+                            ProductId = productId,
+                        });
+                    }
+                }
+
+                await _productColorRepository.AddRangeEntity(productSelectedColors);
+            }
         }
 
         public async Task RemoveAllProductSelectedColors(long productId)
@@ -309,6 +314,33 @@ namespace MarketPlace.Application.Services.Implementations
             _productColorRepository
                 .DeletePermanentEntities(await _productColorRepository.GetQuery()
                     .Where(x => x.ProductId == productId).ToListAsync());
+        }
+
+        public async Task<ProductDetailDto> GetProductDetailById(long productId)
+        {
+            var product = await _productRepository.GetQuery()
+                .Include(x => x.Seller)
+                .ThenInclude(x => x.User)
+                .Include(x => x.ProductSelectedCategories)
+                .ThenInclude(x => x.ProductCategory)
+                .Include(x => x.ProductGalleries)
+                .Include(x => x.ProductColors)
+                .FirstOrDefaultAsync(x => x.Id == productId);
+            if (product == null) return null;
+
+            return new ProductDetailDto
+            {
+                Title = product.Title,
+                Price = product.Price,
+                ImageName = product.ImageName,
+                Description = product.Description,
+                ShortDescription = product.ShortDescription,
+                Seller = product.Seller,
+                SellerId = product.SellerId,
+                ProductCategories = product.ProductSelectedCategories.Select(x => x.ProductCategory).ToList(),
+                ProductGalleries = product.ProductGalleries.ToList(),
+                ProductColors = product.ProductColors.ToList()
+            };
         }
 
         #endregion

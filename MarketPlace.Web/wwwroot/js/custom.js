@@ -116,12 +116,51 @@ $('#add_color_button').on('click',
     }
 );
 
+$('#add_feature_button').on('click',
+    function (e) {
+        e.preventDefault();
+        var feature = $('#product_feature_input').val();
+        var featureValue = $('#product_feature_value_input').val();
+        if (feature !== '' && featureValue !== '') {
+            var currentFeaturesCount = $('#list_of_product_features tr');
+            var index = currentFeaturesCount.length;
+
+            var isExistsSelectedColor = $('[feature-hidden-input][value="' + feature + '"]');
+            if (isExistsSelectedColor.length === 0) {
+                var featureNode = `<input type="hidden" value="${feature}"  name="ProductFeatures[${index}].Feature" feature-hidden-input="${feature}-${featureValue}">`;
+                var featureValueNode = `<input type="hidden" value="${featureValue}"  name="ProductFeatures[${index}].FeatureValue" feature-value-hidden-input="${feature}-${featureValue}" >`;
+                $('#create_product_form').append(featureNode);
+                $('#create_product_form').append(featureValueNode);
+
+                var featureTableNode = `<tr feature-table-item="${feature}-${featureValue}"> <td> ${feature} </td><td> ${featureValue} </td><td> <a class="btn btn-danger text-white" onclick="removeProductFeature('${feature}-${featureValue}')">حذف</a> </td>  </tr>`;
+                $('#list_of_product_features').append(featureTableNode);
+
+
+                $('#product_feature_input').val('');
+                $('#product_feature_value_input').val('');
+            } else {
+                ShowMessage('اخطار', 'ویژگی وارد شده تکراری می باشد', 'warning');
+                $('#product_feature_input').val('').focus();
+            }
+        } else {
+            ShowMessage('اخطار', 'لطفا نام ویژگی و مقدار آن را به درستی وارد نمایید', 'warning');
+        }
+    }
+);
+
 function removeProductColor(index) {
     $('[color-name-hidden-input="' + index + '"]').remove();
     $('[color-price-hidden-input="' + index + '"]').remove();
     $('[color-code-hidden-input="' + index + '"]').remove();
     $('[color-table-item="' + index + '"]').remove();
     reOrderProductColorHiddenInput();
+}
+
+function removeProductFeature(index) {
+    $('[feature-hidden-input="' + index + '"]').remove();
+    $('[feature-value-hidden-input="' + index + '"]').remove();
+    $('[feature-table-item="' + index + '"]').remove();
+    reOrderProductFeatureHiddenInput();
 }
 
 function reOrderProductColorHiddenInput() {
@@ -137,6 +176,35 @@ function reOrderProductColorHiddenInput() {
     });
 }
 
+function reOrderProductFeatureHiddenInput() {
+    var hiddenFeatures = $('[feature-hidden-input]');
+    $.each(hiddenFeatures, function (index, value) {
+        var hiddenFeature = $(value);
+        var featureId = $(value).attr('feature-hidden-input');
+        var featureValue = $('[feature-value-hidden-input="' + featureId + '"]');
+        $(hiddenFeature).attr('name', 'ProductFeatures[' + index + '].Feature');
+        $(featureValue).attr('name', 'ProductFeatures[' + index + '].FeatureValue');
+    });
+}
+
+
 $('#FilterProductOrderBy').on('change', function () {
     $('#filter-form').submit();
 });
+
+function changeProductPriceBasedOnColor(priceOfColor, colorName) {
+    var basePrice = parseInt($('#ProductBasePrice').val());
+    $('.current_price').html(separate((basePrice + priceOfColor) + 'تومان' + '(' + colorName + ')'));
+}
+
+function separate(Number) {
+    Number += '';
+    Number = Number.replace(',', '');
+    x = Number.split('.');
+    y = x[0];
+    z = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(y))
+        y = y.replace(rgx, '$1' + ',' + '$2');
+    return y + z;
+}

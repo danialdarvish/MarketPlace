@@ -72,7 +72,16 @@
 
                         </div>
                         <div class="price_box">
-                            <span class="current_price">@Model.Price.ToString("#,0 تومان")</span>
+                            @if (Model.ProductColors != null && Model.ProductColors.Any())
+                            {
+                                var firstColor = Model.ProductColors.FirstOrDefault();
+                                <span class="current_price">@((Model.Price + firstColor.Price).ToString("#,0 تومان")) (@firstColor.ColorName)</span>
+                            }
+                            else
+                            {
+                                <span class="current_price">@Model.Price.ToString("#,0 تومان")</span>
+
+                            }
                             @*<span class="old_price">80,000 تومان</span>*@
                         </div>
                         <div class="product_desc">
@@ -80,6 +89,7 @@
                                 @Model.ShortDescription
                             </p>
                         </div>
+                        <input type="hidden" name="product_price" value="@Model.Price" id="ProductBasePrice" />
                         @if (Model.ProductColors != null && Model.ProductColors.Any())
                         {
                             <div class="product_variant color">
@@ -88,8 +98,8 @@
                                 <ul>
                                     @foreach (var color in Model.ProductColors)
                                     {
-                                        <li style="background: @color.ColorCode; border-radius: 10px">
-                                            <a href="#"></a>
+                                        <li style="background: @color.ColorCode; border-radius: 20px">
+                                            <a onclick="changeProductPriceBasedOnColor(@color.Price, '@color.ColorName')"></a>
                                         </li>
                                     }
                                 </ul>
@@ -154,29 +164,22 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="sheet" role="tabpanel">
-                            <div class="product_d_table">
-                                <form action="#">
+                            @if (Model.ProductFeatures != null && Model.ProductFeatures.Any())
+                            {
+                                <div class="product_d_table">
                                     <table>
                                         <tbody>
-                                            <tr>
-                                                <td class="first_child">جنس</td>
-                                                <td>پلی استر</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="first_child">سبک ها</td>
-                                                <td>دخترانه</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="first_child">خصوصیات</td>
-                                                <td>پیراهن کوتاه</td>
-                                            </tr>
+                                            @foreach (var feature in Model.ProductFeatures)
+                                            {
+                                                <tr>
+                                                    <td class="first_child">@feature.FeatureTitle</td>
+                                                    <td>@feature.FeatureValue</td>
+                                                </tr>
+                                            }
                                         </tbody>
                                     </table>
-                                </form>
-                            </div>
-                            <div class="product_info_content">
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و</p>
-                            </div>
+                                </div>
+                            }
                         </div>
 
                         <div class="tab-pane fade" id="reviews" role="tabpanel">

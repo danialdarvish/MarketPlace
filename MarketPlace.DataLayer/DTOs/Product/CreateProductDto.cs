@@ -26,6 +26,7 @@ namespace MarketPlace.DataLayer.DTOs.Product
         public bool IsActive { get; set; }
 
         public List<CreateProductColorDto> ProductColors { get; set; }
+        public List<CreateProductFeatureDto> ProductFeatures { get; set; }
         public List<long> SelectedCategories { get; set; }
     }
 

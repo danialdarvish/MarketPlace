@@ -2,7 +2,7 @@
 @using MarketPlace.Application.Utils
 @model MarketPlace.DataLayer.DTOs.Product.EditProductDto
 @{
-    ViewData["Title"] = "ویرایش" + Model.Title;
+    ViewData["Title"] = "ویرایش " + Model.Title;
     var categories = ViewBag.Categories as List<ProductCategory>;
 }
 
@@ -47,6 +47,17 @@
                                                     <input type="hidden" value="@color.ColorName" name="ProductColors[@index].ColorName" color-name-hidden-input="@color.ColorName-@color.Price">
                                                     <input type="hidden" value="@color.Price" name="ProductColors[@index].Price" color-price-hidden-input="@color.ColorName-@color.Price">
                                                     <input type="hidden" value="@color.ColorCode" name="ProductColors[@index].ColorCode" color-code-hidden-input="@color.ColorName-@color.Price">
+                                                    index++;
+                                                }
+                                            }
+
+                                            @if (Model.ProductFeatures != null & Model.ProductFeatures.Any())
+                                            {
+                                                var index = 0;
+                                                @foreach (var feature in Model.ProductFeatures)
+                                                {
+                                                    <input type="hidden" value="@feature.Feature" name="ProductFeatures[@index].Feature" feature-hidden-input="@feature.Feature-@feature.FeatureValue">
+                                                    <input type="hidden" value="@feature.FeatureValue" name="ProductFeatures[@index].FeatureValue" feature-value-hidden-input="@feature.Feature-@feature.FeatureValue">
                                                     index++;
                                                 }
                                             }
@@ -150,6 +161,44 @@
                                                                     <td>@color.Price</td>
                                                                     <td>
                                                                         <a class="btn btn-danger text-white" onclick="removeProductColor('@color.ColorName-@color.Price')">حذف</a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <hr />
+
+                                            <label>ویژگی محصول</label>
+                                            <input type="text" placeholder="ویژگی محصول" id="product_feature_input" />
+
+                                            <label>مقدار ویژگی محصول</label>
+                                            <input type="text" placeholder="مقدار ویژگی محصول" id="product_feature_value_input" />
+
+                                            <button class="btn btn-success" id="add_feature_button">افزودن ویژگی</button>
+
+
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>نام ویژگی</th>
+                                                            <th>مقدار ویژگی</th>
+                                                            <th>دستورات</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="list_of_product_features">
+                                                        @if (Model.ProductColors != null && Model.ProductColors.Any())
+                                                        {
+                                                            @foreach (var feature in Model.ProductFeatures)
+                                                            {
+                                                                <tr feature-table-item="@feature.Feature-@feature.FeatureValue">
+                                                                    <td>@feature.Feature</td>
+                                                                    <td>@feature.FeatureValue</td>
+                                                                    <td>
+                                                                        <a class="btn btn-danger text-white" onclick="removeProductFeature('@feature.Feature-@feature.FeatureValue')">حذف</a>
                                                                     </td>
                                                                 </tr>
                                                             }

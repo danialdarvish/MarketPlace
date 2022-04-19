@@ -43,5 +43,12 @@ namespace MarketPlace.Application.Services.Interfaces
         Task<CreateOrEditProductGalleryResult> EditProductGallery(long galleryId, long sellerId, CreateOrEditProductGalleryDto gallery);
 
         #endregion
+
+        #region ProductFeature
+
+        Task CreateProductFeatures(List<CreateProductFeatureDto> features, long productId);
+        Task RemoveAllProductFeatures(long productId);
+
+        #endregion
     }
 }

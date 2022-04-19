@@ -23,14 +23,16 @@ namespace MarketPlace.Application.Services.Implementations
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IGenericRepository<ProductColor> _productColorRepository;
         private readonly IGenericRepository<ProductGallery> _productGalleryRepository;
+        private readonly IGenericRepository<ProductFeature> _productFeatureRepository;
         private readonly IGenericRepository<ProductCategory> _productCategoryRepository;
         private readonly IGenericRepository<ProductSelectedCategory> _productSelectedCategoryRepository;
 
-        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductColor> productColorRepository, IGenericRepository<ProductGallery> productGalleryRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository)
+        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductColor> productColorRepository, IGenericRepository<ProductGallery> productGalleryRepository, IGenericRepository<ProductFeature> productFeatureRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository)
         {
             _productRepository = productRepository;
             _productColorRepository = productColorRepository;
             _productGalleryRepository = productGalleryRepository;
+            _productFeatureRepository = productFeatureRepository;
             _productCategoryRepository = productCategoryRepository;
             _productSelectedCategoryRepository = productSelectedCategoryRepository;
         }
@@ -216,7 +218,13 @@ namespace MarketPlace.Application.Services.Implementations
                     }).ToListAsync(),
                 SelectedCategories = await _productSelectedCategoryRepository.GetQuery()
                     .Where(x => x.ProductId == productId && !x.IsDelete)
-                    .Select(x => x.ProductCategoryId).ToListAsync()
+                    .Select(x => x.ProductCategoryId).ToListAsync(),
+                ProductFeatures = await _productFeatureRepository.GetQuery()
+                    .Where(x => x.ProductId == productId && !x.IsDelete).Select(x => new CreateProductFeatureDto
+                    {
+                        Feature = x.FeatureTitle,
+                        FeatureValue = x.FeatureValue,
+                    }).ToListAsync()
             };
         }
 
@@ -259,6 +267,11 @@ namespace MarketPlace.Application.Services.Implementations
             await RemoveAllProductSelectedColors(product.Id);
             await AddProductSelectedColors(product.Id, product.ProductColors);
             await _productColorRepository.SaveChanges();
+
+            // Product features
+            await RemoveAllProductFeatures(product.Id);
+            await CreateProductFeatures(product.ProductFeatures, product.Id);
+            await _productFeatureRepository.SaveChanges();
 
             return EditProductResult.Success;
         }
@@ -325,6 +338,7 @@ namespace MarketPlace.Application.Services.Implementations
                 .ThenInclude(x => x.ProductCategory)
                 .Include(x => x.ProductGalleries)
                 .Include(x => x.ProductColors)
+                .Include(x => x.ProductFeatures)
                 .FirstOrDefaultAsync(x => x.Id == productId);
             if (product == null) return null;
 
@@ -339,7 +353,8 @@ namespace MarketPlace.Application.Services.Implementations
                 SellerId = product.SellerId,
                 ProductCategories = product.ProductSelectedCategories.Select(x => x.ProductCategory).ToList(),
                 ProductGalleries = product.ProductGalleries.ToList(),
-                ProductColors = product.ProductColors.ToList()
+                ProductColors = product.ProductColors.ToList(),
+                ProductFeatures = product.ProductFeatures.ToList()
             };
         }
 
@@ -455,6 +470,39 @@ namespace MarketPlace.Application.Services.Implementations
 
         #endregion
 
+        #region ProductFeature
+
+        public async Task CreateProductFeatures(List<CreateProductFeatureDto> features, long productId)
+        {
+            var newFeatures = new List<ProductFeature>();
+            if (features != null && features.Any())
+            {
+                foreach (var feature in features)
+                {
+                    newFeatures.Add(new ProductFeature
+                    {
+                        ProductId = productId,
+                        FeatureTitle = feature.Feature,
+                        FeatureValue = feature.FeatureValue
+                    });
+                }
+
+                await _productFeatureRepository.AddRangeEntity(newFeatures);
+                await _productFeatureRepository.SaveChanges();
+            }
+        }
+
+        public async Task RemoveAllProductFeatures(long productId)
+        {
+            var productFeatures = await _productFeatureRepository.GetQuery()
+                .Where(x => x.ProductId == productId).ToListAsync();
+
+            _productFeatureRepository.DeletePermanentEntities(productFeatures);
+            await _productFeatureRepository.SaveChanges();
+        }
+
+        #endregion
+
         #region Dispose
 
         public async ValueTask DisposeAsync()
@@ -462,6 +510,9 @@ namespace MarketPlace.Application.Services.Implementations
             await _productRepository.DisposeAsync();
             await _productCategoryRepository.DisposeAsync();
             await _productSelectedCategoryRepository.DisposeAsync();
+            await _productFeatureRepository.DisposeAsync();
+            await _productColorRepository.DisposeAsync();
+            await _productGalleryRepository.DisposeAsync();
         }
 
         #endregion

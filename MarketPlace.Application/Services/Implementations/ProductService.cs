@@ -342,6 +342,9 @@ namespace MarketPlace.Application.Services.Implementations
                 .FirstOrDefaultAsync(x => x.Id == productId);
             if (product == null) return null;
 
+            var selectedCategoriesIds = product.ProductSelectedCategories
+                .Select(x => x.ProductCategoryId).ToList();
+
             return new ProductDetailDto
             {
                 Title = product.Title,
@@ -354,7 +357,13 @@ namespace MarketPlace.Application.Services.Implementations
                 ProductCategories = product.ProductSelectedCategories.Select(x => x.ProductCategory).ToList(),
                 ProductGalleries = product.ProductGalleries.ToList(),
                 ProductColors = product.ProductColors.ToList(),
-                ProductFeatures = product.ProductFeatures.ToList()
+                ProductFeatures = product.ProductFeatures.ToList(),
+                RelatedProducts = await _productRepository.GetQuery()
+                    .Include(x => x.ProductSelectedCategories)
+                        .Where(x => x.ProductSelectedCategories
+                            .Any(s => selectedCategoriesIds
+                                .Contains(s.ProductCategoryId)) && x.Id != productId && x.ProductAcceptanceState == ProductAcceptanceState.Accepted)
+                                    .ToListAsync()
             };
         }
 

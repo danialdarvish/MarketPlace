@@ -4,14 +4,16 @@ using MarketPlace.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MarketPlace.DataLayer.Migrations
 {
     [DbContext(typeof(MarketPlaceDbContext))]
-    partial class MarketPlaceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220420115723_OrderAndOrderDetailAdded")]
+    partial class OrderAndOrderDetailAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,6 +231,7 @@ namespace MarketPlace.DataLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDelete")
@@ -244,6 +247,7 @@ namespace MarketPlace.DataLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TracingCode")
+                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 

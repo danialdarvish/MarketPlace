@@ -1,0 +1,15 @@
+﻿@model MarketPlace.DataLayer.DTOs.Orders.AddProductToOrderDto
+<form method="post"
+      asp-area="User"
+      asp-controller="Order"
+      asp-action="AddProductToOrder"
+      data-ajax="true"
+      data-ajax-success="onSuccessAddProductToOrder"
+      data-ajax-method="post"
+      id="addProductToOrderForm">
+
+    <input type="hidden" id="add_product_to_order_ProductId" asp-for="ProductId" />
+    <input type="hidden" id="add_product_to_order_ProductColorId" asp-for="ProductColorId" />
+    <input type="hidden" id="add_product_to_order_Count" asp-for="Count" />
+
+</form>

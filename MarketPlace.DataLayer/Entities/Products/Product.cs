@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using MarketPlace.DataLayer.Entities.Common;
+using MarketPlace.DataLayer.Entities.ProductOrder;
 using MarketPlace.DataLayer.Entities.Store;
 
 namespace MarketPlace.DataLayer.Entities.Products
@@ -51,6 +52,7 @@ namespace MarketPlace.DataLayer.Entities.Products
         public ICollection<ProductGallery> ProductGalleries { get; set; }
         public Seller Seller { get; set; }
         public ICollection<ProductFeature> ProductFeatures { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
 
         #endregion
     }

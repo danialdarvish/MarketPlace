@@ -1,4 +1,17 @@
-﻿function ShowMessage(title, text, theme) {
+﻿function open_waiting(selector = 'body') {
+    $(selector).waitMe({
+        effect: 'facebook',
+        text: 'لطفا صبر کنید ...',
+        bg: 'rgba(255,255,255,0.7)',
+        color: '#000'
+    });
+}
+
+function close_waiting(selector = 'body') {
+    $(selector).waitMe('hide');
+}
+
+function ShowMessage(title, text, theme) {
     window.createNotification({
         closeOnClick: true,
         displayCloseButton: false,
@@ -187,15 +200,35 @@ function reOrderProductFeatureHiddenInput() {
     });
 }
 
-
 $('#FilterProductOrderBy').on('change', function () {
     $('#filter-form').submit();
 });
 
-function changeProductPriceBasedOnColor(priceOfColor, colorName) {
+function changeProductPriceBasedOnColor(colorId, priceOfColor, colorName) {
     var basePrice = parseInt($('#ProductBasePrice').val());
     $('.current_price').html(separate((basePrice + priceOfColor) + 'تومان' + '(' + colorName + ')'));
+    $('#add_product_to_order_ProductColorId').val(colorId);
 }
+
+$('#number_of_products_in_basket').on('change', function (e) {
+    var numberOfProducts = parseInt(e.target.value, 0);
+    $('#add_product_to_order_Count').val(numberOfProducts);
+});
+
+function onSuccessAddProductToOrder(res) {
+    if (res.status === 'Success') {
+        ShowMessage('موفقیت آمیز', res.message);
+    } else {
+        ShowMessage('هشدار', res.message, 'warning');
+    }
+    
+    close_waiting();
+}
+
+$('#submitOrderForm').on('click', function () {
+    $('#addProductToOrderForm').submit();
+    open_waiting();
+});
 
 function separate(Number) {
     Number += '';

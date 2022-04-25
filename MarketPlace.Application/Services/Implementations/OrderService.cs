@@ -41,7 +41,8 @@ namespace MarketPlace.Application.Services.Implementations
                 await AddOrderForUser(userId);
 
             var userOpenOrder = await _orderRepository.GetQuery()
-                .Include(x => x.OrderDetails)
+                .Include(x => x.OrderDetails).ThenInclude(x => x.ProductColor)
+                .Include(x => x.OrderDetails).ThenInclude(x => x.Product)
                 .FirstOrDefaultAsync(x => x.UserId == userId && !x.IsPaid);
 
             return userOpenOrder;

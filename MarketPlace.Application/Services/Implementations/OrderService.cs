@@ -78,6 +78,28 @@ namespace MarketPlace.Application.Services.Implementations
             }
         }
 
+        public async Task<UserOpenOrderDto> GetUserOpenOrderDetail(long userId)
+        {
+            var userOpenOrder = await GetUserLatestOpenOrder(userId);
+
+            return new UserOpenOrderDto
+            {
+                UserId = userId,
+                Description = userOpenOrder.Description,
+                Details = userOpenOrder.OrderDetails.Select(x => new UserOpenOrderDetailItemDto
+                {
+                    Count = x.Count,
+                    ColorName = x.ProductColor?.ColorName,
+                    ProductColorId = x.ProductColorId,
+                    ProductColorPrice = x.ProductColor?.Price ?? 0,
+                    ProductId = x.ProductId,
+                    ProductPrice = x.Product.Price,
+                    ProductTitle = x.Product.Title,
+                    ProductImageName = x.Product.ImageName
+                }).ToList()
+            };
+        }
+
         #endregion
 
         #region Dispose

@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using MarketPlace.DataLayer.Entities.Account;
 using MarketPlace.DataLayer.Entities.Common;
+using MarketPlace.DataLayer.Entities.Wallet;
 
 namespace MarketPlace.DataLayer.Entities.Store
 {
@@ -46,6 +48,7 @@ namespace MarketPlace.DataLayer.Entities.Store
         #region Relations
 
         public User User { get; set; }
+        public ICollection<SellerWallet> SellerWallets { get; set; }
 
         #endregion
     }

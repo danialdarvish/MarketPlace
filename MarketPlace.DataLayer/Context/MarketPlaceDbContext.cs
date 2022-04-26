@@ -6,6 +6,7 @@ using System.Linq;
 using MarketPlace.DataLayer.Entities.ProductOrder;
 using MarketPlace.DataLayer.Entities.Products;
 using MarketPlace.DataLayer.Entities.Store;
+using MarketPlace.DataLayer.Entities.Wallet;
 
 namespace MarketPlace.DataLayer.Context
 {
@@ -61,6 +62,12 @@ namespace MarketPlace.DataLayer.Context
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        #endregion
+
+        #region Wallet
+
+        public DbSet<SellerWallet> SellerWallets { get; set; }
 
         #endregion
 

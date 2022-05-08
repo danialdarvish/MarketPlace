@@ -368,6 +368,14 @@ namespace MarketPlace.Application.Services.Implementations
             };
         }
 
+        public async Task<List<Product>> FilterProductsForSellerByProductName(long sellerId, string productName)
+        {
+            return await _productRepository.GetQuery()
+                .Where(x => x.SellerId == sellerId && EF.Functions
+                    .Like(x.Title, $"%{productName}%"))
+                .ToListAsync();
+        }
+
         #endregion
 
         #region ProductCategory

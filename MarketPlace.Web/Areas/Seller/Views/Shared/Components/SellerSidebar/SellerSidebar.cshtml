@@ -9,6 +9,7 @@
         <li><a asp-area="User" asp-controller="Ticket" asp-action="AddTicket" class="nav-link @(controller == "Ticket" && action == "AddTicket" ? "active show" : "")">ثبت تیکت جدید</a></li>
         <li><a asp-area="User" asp-controller="Ticket" asp-action="Index" class="nav-link @(controller == "Ticket" && action == "Index" ? "active show" : "")">لیست تیکت ها</a></li>
         <li><a asp-area="Seller" asp-controller="Product" asp-action="Index" class="nav-link @(controller == "Product" && action == "Index" ? "active show" : "")">مدیریت محصولات</a></li>
+        <li><a asp-area="Seller" asp-controller="ProductDiscount" asp-action="FilterDiscounts" class="nav-link @(controller == "ProductDiscount" && action == "FilterDiscounts" ? "active show" : "")">مدیریت تخفیفات</a></li>
         <li><a asp-area="User" asp-controller="Account" asp-action="LogOut" class="nav-link @(controller == "Account" && action == "LogOut" ? "active show" : "")">خروج</a></li>
     </ul>
 </div>

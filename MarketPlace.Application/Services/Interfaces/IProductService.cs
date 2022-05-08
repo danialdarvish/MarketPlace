@@ -23,6 +23,7 @@ namespace MarketPlace.Application.Services.Interfaces
         Task AddProductSelectedColors(long productId, List<CreateProductColorDto> colors);
         Task RemoveAllProductSelectedColors(long productId);
         Task<ProductDetailDto> GetProductDetailById(long productId);
+        Task<List<Product>> FilterProductsForSellerByProductName(long sellerId, string productName);
 
         #endregion
 

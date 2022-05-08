@@ -129,6 +129,18 @@ namespace MarketPlace.Web.Areas.Seller.Controllers
 
         #endregion
 
+        #region Get products json
+
+        [HttpGet("products-autocomplete")]
+        public async Task<IActionResult> GetSellerProductsJson(string productName)
+        {
+            var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
+            var data = await _productService.FilterProductsForSellerByProductName(seller.Id, productName);
+            return new JsonResult(data);
+            //return JsonResponseStatus.SendStatus(JsonResponseStatusType.Success, "", data);
+        }
+
+        #endregion
 
         #endregion
 

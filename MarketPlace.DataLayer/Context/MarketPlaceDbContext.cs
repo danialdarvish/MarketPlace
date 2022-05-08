@@ -18,7 +18,6 @@ namespace MarketPlace.DataLayer.Context
 
         }
 
-
         #region Account
 
         public DbSet<User> Users { get; set; }
@@ -55,6 +54,13 @@ namespace MarketPlace.DataLayer.Context
         public DbSet<ProductColor> ProductColors { get; set; }
         public DbSet<ProductGallery> ProductGalleries { get; set; }
         public DbSet<ProductFeature> ProductFeatures { get; set; }
+
+        #endregion
+
+        #region Product discount
+
+        public DbSet<ProductDiscount> ProductDiscounts { get; set; }
+        public DbSet<ProductDiscountUse> ProductDiscountUses { get; set; }
 
         #endregion
 

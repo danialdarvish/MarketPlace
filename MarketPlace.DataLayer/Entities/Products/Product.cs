@@ -43,6 +43,9 @@ namespace MarketPlace.DataLayer.Entities.Products
         [Display(Name = "وضعیت")]
         public ProductAcceptanceState ProductAcceptanceState { get; set; }
 
+        [Display(Name = "درصد سایت")]
+        public int SiteProfit { get; set; }
+
         #endregion
 
         #region Relations
@@ -53,6 +56,7 @@ namespace MarketPlace.DataLayer.Entities.Products
         public Seller Seller { get; set; }
         public ICollection<ProductFeature> ProductFeatures { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
+        public ICollection<ProductDiscount> ProductDiscounts { get; set; }
 
         #endregion
     }

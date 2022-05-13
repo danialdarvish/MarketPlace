@@ -13,5 +13,11 @@ namespace MarketPlace.DataLayer.DTOs.Orders
         {
             return Details.Sum(x => (x.ProductPrice + x.ProductColorPrice) * x.Count);
         }
+
+
+        public int GetTotalDiscount()
+        {
+            return Details.Sum(x => x.GetOrderDetailWithDiscountPriceAmount());
+        }
     }
 }

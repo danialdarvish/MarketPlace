@@ -6,6 +6,7 @@ using MarketPlace.Web.PresentationExtensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MarketPlace.DataLayer.DTOs.Common;
 
 namespace MarketPlace.Web.Controllers
 {
@@ -14,12 +15,14 @@ namespace MarketPlace.Web.Controllers
         #region Constructor
 
         private readonly ISiteService _siteService;
+        private readonly IPaymentService _paymentService;
         private readonly IContactService _contactService;
         private readonly ICaptchaValidator _captchaValidator;
 
-        public HomeController(IContactService contactService, ICaptchaValidator captchaValidator, ISiteService siteService)
+        public HomeController(ISiteService siteService, IPaymentService paymentService, IContactService contactService, ICaptchaValidator captchaValidator)
         {
             _siteService = siteService;
+            _paymentService = paymentService;
             _contactService = contactService;
             _captchaValidator = captchaValidator;
         }
@@ -36,6 +39,16 @@ namespace MarketPlace.Web.Controllers
                 BannerPlacement.Home_2,
                 BannerPlacement.Home_3
             });
+
+            string redirectUrl = "";
+            //var result = _paymentService.CreatePaymentRequest(null, 10000, "توضیحات تست",
+            //    "https://localhost:44350/contact-us", ref redirectUrl, "test@test.com",
+            //    "09123456789");
+
+            //if (result == PaymentStatus.St100)
+            //{
+            //    return Redirect(redirectUrl);
+            //}
 
             return View();
         }

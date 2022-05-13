@@ -45,8 +45,11 @@ namespace MarketPlace.Application.Services.Implementations
                 await AddOrderForUser(userId);
 
             var userOpenOrder = await _orderRepository.GetQuery()
-                .Include(x => x.OrderDetails).ThenInclude(x => x.ProductColor)
-                .Include(x => x.OrderDetails).ThenInclude(x => x.Product)
+                .Include(x => x.OrderDetails)
+                    .ThenInclude(x => x.ProductColor)
+                .Include(x => x.OrderDetails)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductDiscounts)
                 .FirstOrDefaultAsync(x => x.UserId == userId && !x.IsPaid);
 
             return userOpenOrder;
@@ -106,7 +109,7 @@ namespace MarketPlace.Application.Services.Implementations
         {
             var openOrder = await GetUserLatestOpenOrder(userId);
             var similarOrder = openOrder.OrderDetails.FirstOrDefault(x =>
-                x.ProductId == order.ProductId && x.ProductColorId == order.ProductColorId);
+                x.ProductId == order.ProductId && x.ProductColorId == order.ProductColorId && !x.IsDelete);
 
             if (similarOrder == null)
             {
@@ -136,18 +139,50 @@ namespace MarketPlace.Application.Services.Implementations
             {
                 UserId = userId,
                 Description = userOpenOrder.Description,
-                Details = userOpenOrder.OrderDetails.Select(x => new UserOpenOrderDetailItemDto
-                {
-                    Count = x.Count,
-                    ColorName = x.ProductColor?.ColorName,
-                    ProductColorId = x.ProductColorId,
-                    ProductColorPrice = x.ProductColor?.Price ?? 0,
-                    ProductId = x.ProductId,
-                    ProductPrice = x.Product.Price,
-                    ProductTitle = x.Product.Title,
-                    ProductImageName = x.Product.ImageName
-                }).ToList()
+                Details = userOpenOrder.OrderDetails
+                    .Where(x => !x.IsDelete)
+                    .Select(x => new UserOpenOrderDetailItemDto
+                    {
+                        DetailId = x.Id,
+                        Count = x.Count,
+                        ColorName = x.ProductColor?.ColorName,
+                        ProductColorId = x.ProductColorId,
+                        ProductColorPrice = x.ProductColor?.Price ?? 0,
+                        ProductId = x.ProductId,
+                        ProductPrice = x.Product.Price,
+                        ProductTitle = x.Product.Title,
+                        ProductImageName = x.Product.ImageName,
+                        DiscountPercentage = x.Product.ProductDiscounts
+                        .OrderByDescending(s => s.CreateDate)
+                        .FirstOrDefault(s => s.ExpireDate > DateTime.Now)?.Percentage
+                    }).ToList()
             };
+        }
+
+        public async Task<bool> RemoveOrderDetail(long detailId, long userId)
+        {
+            var openOrder = await GetUserLatestOpenOrder(userId);
+
+            var orderDetail = openOrder.OrderDetails.FirstOrDefault(x => x.Id == detailId);
+            if (orderDetail == null) return false;
+
+            _orderDetailRepository.DeleteEntity(orderDetail);
+            await _orderDetailRepository.SaveChanges();
+
+            return true;
+        }
+
+        public async Task ChangeOrderDetailCount(long detailId, long userId, int count)
+        {
+            var userOpenOrder = await GetUserLatestOpenOrder(userId);
+            var detail = userOpenOrder.OrderDetails.FirstOrDefault(x => x.Id == detailId);
+            if (detail != null)
+            {
+                if (count > 0) detail.Count = count;
+                else _orderDetailRepository.DeleteEntity(detail);
+
+                await _orderDetailRepository.SaveChanges();
+            }
         }
 
         #endregion

@@ -20,6 +20,8 @@ namespace MarketPlace.Application.Services.Interfaces
 
         Task AddProductToOpenOrder(AddProductToOrderDto order, long userId);
         Task<UserOpenOrderDto> GetUserOpenOrderDetail(long userId);
+        Task<bool> RemoveOrderDetail(long detailId, long userId);
+        Task ChangeOrderDetailCount(long detailId, long userId, int count);
 
         #endregion
     }

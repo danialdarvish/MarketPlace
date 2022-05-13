@@ -4,6 +4,12 @@ namespace MarketPlace.Application.Utils
 {
     public static class PathExtension
     {
+        #region Domain address
+
+        public static string DomainAddress = "https://localhost:44350";
+
+        #endregion
+
         #region Default images
 
         public static string DefaultAvatar = "/img/defaults/avatar.jpg";

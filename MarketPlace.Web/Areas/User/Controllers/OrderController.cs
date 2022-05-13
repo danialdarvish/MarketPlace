@@ -94,6 +94,29 @@ namespace MarketPlace.Web.Areas.User.Controllers
         [HttpGet("payment-result", Name = "ZarinpalPaymentResult")]
         public async Task<IActionResult> CallBackZarinpal()
         {
+            string authority = _paymentService.GetAuthorityCodeFromCallback(HttpContext);
+            if (authority == "")
+            {
+                TempData[WarningMessage] = "عملیات پرداخت با شکست مواجه شد";
+                return View();
+            }
+
+            var openOrderAmount = await _orderService.GetTotalOrderPriceForPayment(User.GetUserId());
+            long refId = 0;
+            var res = _paymentService
+                .PaymentVerification(null, authority, openOrderAmount, ref refId);
+            if (res == PaymentStatus.St100)
+            {
+                TempData[SuccessMessage] = "پرداخت شما با موفقیت انجام شد";
+                TempData[InfoMessage] = "کد پیگیری شما: " + refId;
+
+                await _orderService
+                    .PayOrderProductPriceToSeller(User.GetUserId(), refId);
+
+                return View();
+            }
+            TempData[WarningMessage] = "عملیات پرداخت با خطا مواجه شد";
+
             return View();
         }
 

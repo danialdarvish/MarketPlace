@@ -24,6 +24,7 @@ namespace MarketPlace.Application.Services.Interfaces
         Task RemoveAllProductSelectedColors(long productId);
         Task<ProductDetailDto> GetProductDetailById(long productId);
         Task<List<Product>> FilterProductsForSellerByProductName(long sellerId, string productName);
+        Task<List<ProductDiscount>> GetAllOffProducts(int take);
 
         #endregion
 
@@ -31,6 +32,8 @@ namespace MarketPlace.Application.Services.Interfaces
 
         Task<List<ProductCategory>> GetAllProductCategoriesByParentId(long? parentId);
         Task<List<ProductCategory>> GetAllActiveProductCategories();
+        Task<List<Product>> GetCategoryProductsByCategoryName(string categoryName, int count = 12);
+        Task<ProductCategory> GetProductCategoryByUrlName(string productCategoryUrlName);
 
         #endregion
 

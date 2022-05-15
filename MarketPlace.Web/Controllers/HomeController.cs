@@ -15,15 +15,15 @@ namespace MarketPlace.Web.Controllers
         #region Constructor
 
         private readonly ISiteService _siteService;
-        private readonly IPaymentService _paymentService;
         private readonly IContactService _contactService;
+        private readonly IProductService _productService;
         private readonly ICaptchaValidator _captchaValidator;
 
-        public HomeController(ISiteService siteService, IPaymentService paymentService, IContactService contactService, ICaptchaValidator captchaValidator)
+        public HomeController(ISiteService siteService, IContactService contactService, IProductService productService, ICaptchaValidator captchaValidator)
         {
             _siteService = siteService;
-            _paymentService = paymentService;
             _contactService = contactService;
+            _productService = productService;
             _captchaValidator = captchaValidator;
         }
 
@@ -39,16 +39,7 @@ namespace MarketPlace.Web.Controllers
                 BannerPlacement.Home_2,
                 BannerPlacement.Home_3
             });
-
-            string redirectUrl = "";
-            //var result = _paymentService.CreatePaymentRequest(null, 10000, "توضیحات تست",
-            //    "https://localhost:44350/contact-us", ref redirectUrl, "test@test.com",
-            //    "09123456789");
-
-            //if (result == PaymentStatus.St100)
-            //{
-            //    return Redirect(redirectUrl);
-            //}
+            ViewData["OffProducts"] = await _productService.GetAllOffProducts(12);
 
             return View();
         }
